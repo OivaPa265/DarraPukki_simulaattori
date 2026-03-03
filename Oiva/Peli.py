@@ -60,7 +60,7 @@ def pelin_luonti(alcohol, lento_voima, sijainti, nimi, kentat):
             cursor.execute(sql, (peli_id, uusi_kentat[i]['ident'], goal_id))
     return peli_id
 
-
+# WHAT THE FUCK DID I WRITE WHY DOSE IT ONLY WORK WHEN LATITUDE AND LONGITUDE ARE THERE THEY NOT
 def get_airport_info(icao):
 
     sql = ("SELECT iso_country, ident, name, latitude_deg, longitude_deg "
@@ -86,19 +86,20 @@ listofgoals = []
 def tarina():
     while True:
         print("" + "=" * 30)
-        print("Tervetuloa peliin. ")
+        print("TERVETULOA PELIIN ")
         print( "Jos haluat tarinan paina enter, ")
-        print(" jos haluat vain tutorialin kirjoita pass, ")
+        print(" jos haluat vain tutorialin kirjoita tutorial, ")
         print(" jos haluat suoraan peliin kirjoita skip :) ")
         print("" + "=" * 30)
         syote = input("Päätös tähän :").upper()
 
-
         # jos pelaaja painaa enter antaa tarinan
         print("" + "=" * 30)
         if syote == "":
-            print(" Lisää tarina tähän Vittu miks sä menit muuttaa tän "
-         "")
+            print("Tarinamme alkaa 2026 metropoliassa johon on tullut uusi opiskelija. Mutta tämä opiskelija ei ole vain kuka vaan vaan tämä on JOULUPUKKI\n"
+         "JOULUPUKKI on päättänyt että hän ei jaksa opiskella vaan haluaa saada kaikista eniten merkkejä hänen haalareihinsa.\n"
+         "Mutta pukki ei saa paljastaa että hän on pukki joten hänen on pitänyt löytää uusi tapa matkustaa ympäri suomea merkkejä keräämiseen\n"
+         "Pukki päätti käytää hänen taikavoimiaan ja oppi lentämään alkoholin avulla \n")
             print("" + "=" * 30)
 
             # kysyy tarinan jälkeen jos pelaaja haluaan tutorialin
@@ -116,7 +117,6 @@ def tarina():
             # kysyy pelaajalta jos hän ymmärsi
             ymmarsiko = input("Ymmärsitkö Y/N? ").upper()
 
-
             #jos painoi Y aloitaa pelin
             print("" + "=" * 30)
             if ymmarsiko == "Y":
@@ -131,7 +131,7 @@ def tarina():
 
         # jos pelaaja kirjoitti pass antaa tutorialin
 
-        elif syote == "PASS":
+        elif syote == "TUTORIAL":
             print("" + "=" * 30)
             print("Lisää tutorial tähän.")
 
@@ -154,7 +154,6 @@ def tarina():
             break
 
 tarina()
-
 
 def pelaajan_tavarat(peli_id):
     cursor = Yhdiste.cursor(dictionary=True)
@@ -179,15 +178,16 @@ while not hävijö:
     kentta_info = get_airport_info(current_icao)
     kentta_nimi = kentta_info[0]['name'] if kentta_info else "Tuntematon sijainti"
 
-    # tekee ihan VITUN hienon näytö pelaajalle siitä missä hän on
+    # tekee ihan VITUN hienon näytö pelaajalle siitä missä hän on VITTU MÄ OON YLPEE TÄST
     print("" + "=" * 30)
-    print(f" SIJAINTI: {kentta_nimi} ({current_icao})")
-    print(f" ALKOHOLI: {current_alcohol}")
-    print(f" LIIKUMIS MATKA:  {current_range}")
+    print(f" |ALOITUS | DARRAPUKKI SIMULAATORI ID| {peli_id}" "")
+    print(f" |SIJAINTI| {kentta_nimi} ({current_icao})")
+    print(f" |ALKOHOLI| {current_alcohol}ml")
+    print(f" |LIIKUMIS| {current_range}m")
     print("=" * 30)
 
     # ei tee mitää
-    input(" Lisää lissää lisä juttuja tähä voi vittu mua väsytää")
+    input(" TEE SIIRTYMINEN SEURAAVAKSI ")
     break
 
     # FROM THE MOMENT I UNDRESTOOD THE WEAKNESS OF MY CODING IT DISGUSTED ME I CRAVED FOR THE STRENGHT AND CERTANTY OF BEER I ASPIRED TO THE PURITY OF THE BLESSED BEER.
@@ -200,9 +200,7 @@ while not hävijö:
 
     # AND I WILL PRAY THAT THE MACHINE SPIRIT INSIDE MY COMPUTER IS WILLING TO GO THROUGH THIS WITH ME.
 
-
-
-          ######################m
+          #######################
        ##############################
     ####################################
    ########################################
@@ -211,14 +209,14 @@ while not hävijö:
  ##########################################
  ###########################################
   ##########################################
-   ####################################
-   ####         #######      ###    ####
+   ######################################
+   ####         #######      ###    #####
   ####          ######      #####     #####
   #####          ########    ###     ######
    ####       ##############       #####
-     ############      ##########
+     ############      #############
        ###########     ###########
-           ##########m#########
+           ####################
              #################
              ################
                ###########
