@@ -176,7 +176,7 @@ while not hävijö:
 
     # hakee jotai vittu
     kentta_info = get_airport_info(current_icao)
-    kentta_nimi = kentta_info[0]['name'] if kentta_info else "Tuntematon sijainti"
+    kentta_nimi = kentta_info[0]['name']
 
     # tekee ihan VITUN hienon näytö pelaajalle siitä missä hän on VITTU MÄ OON YLPEE TÄST
     print("" + "=" * 30)
