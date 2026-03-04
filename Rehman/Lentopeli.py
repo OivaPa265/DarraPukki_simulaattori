@@ -6,7 +6,7 @@ import mysql.connector
 Yhdiste = mysql.connector.connect(
     host="localhost",
     port=3306,
-    database="demo",# Why do I call it demo it is the real one?
+    database="flight_game",# Why do I call it demo it is the real one?
     user="root",
     password="7523",
     autocommit=True,
