@@ -1,1 +1,96 @@
 
+# kirjoita miten alkoholi on polttoiane ja sen miten pelin häviää jos vaikka alkoholi loppuu.
+# kirjoita myös mitä tapahtuu kun voitat eli keräät kaikki haalarimerkit.
+# 10 haalarimerkkiä ja kun voittaa saa erikois haalarimerkin
+# kuinka paljon alkoholia saadaan ja miten sitä saadaan
+
+
+# Alkoholi polttoaine ja miten häviää
+import mysql.connector
+import random
+yhdiste = mysql.connector.connect(
+         host='127.0.0.1',
+         port= 3306,
+         database='flight_game',
+         user='root',
+         password='1507:Chris!05',
+         autocommit=True
+         )
+
+
+# -- ohjelma alkaa tästä --
+
+def polttoaine_positiivinen():
+    print("Vrummm vrummm vrummm")
+    # pelaaja liikkuu jotenkin perkele
+    return
+
+def polttoaine_negatiivinen():
+    print("===============================================")
+    print("Hävisit pelin koska olet niin huono juomaan!!! ")
+    print("===============================================")
+    return
+
+
+def polttoaine_liikaa():
+    if alkoholi > 13:
+        print("===================================")
+        print("Hävisit pelin koska olet juoppo!!! ")
+        print("===================================")
+    # pelaaja taas vittu häivää koska se on vitun juoppo
+    return
+
+def voitto():
+    print("==================================================================")
+    print("Jeee voitit sait kaikki haalarimerkit tässä on erikois apro merkki")
+    print("==================================================================")
+    # Kun pelaaja kerää kaikki haalarimerkit se voittaa ja tähän tulee koodi voitto ruudulle
+    return
+
+
+def lista_lukumaara():
+    pituus = len(haalarimerkit_lista)
+    if pituus == 10:
+        voitto()
+    return pituus
+
+def uusiyritys():
+    return alkoholi
+
+# -- Pääohjelma --
+
+# alkoholin väliaikainen määrrittely
+# alkoholi = int(input("Montako alkoholi juomaa juot? (1-10) jos ylität 10 häviät pelin "))
+
+alkoholi = random.randint(0,10)
+haalarimerkit_lista = []
+
+
+
+while alkoholi > 0:
+    print("=========================================")
+    haalarimerkki = input("Keräätkö haalarimerkin? (paina Enter) ")
+    print("- - - - - - - - - - - - - - - - - - - - -")
+    polttoaine_positiivinen()
+    if haalarimerkki == "":
+        print("- - - - - - - - - - - - - - - - - - - - -")
+        print("Haalarimerkki löydetty!")
+        print("- - - - - - - - - - - - - - - - - - - - -")
+        haalarimerkit_lista.append(haalarimerkki)
+        print("Sinulla on haalarimerkkejä tällä hetkellä",len(haalarimerkit_lista))
+        lkm = lista_lukumaara()
+        if lkm == 10:
+            break
+    print("=========================================")
+    print("=========================================")
+    juo = input("Kaadanko kurkustasi bisseä? (paina Enter)")
+    print("- - - - - - - - - - - - - - - - - - - - -")
+    if juo == "":
+        alkoholi = random.randint(0,14)
+        print("- - - - - - - - - - - - - - - - - - - - -")
+        print(f"Kaadoin kurkustasi alas {alkoholi} juomaa! ")
+        if alkoholi < 1:
+            polttoaine_negatiivinen()
+        if alkoholi > 13:
+            polttoaine_liikaa()
+            break
