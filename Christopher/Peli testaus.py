@@ -321,7 +321,7 @@ def uusiyritys():
 
 # -- Pääohjelma --
 
-alkoholi = random.randint(0,10)
+alkoholi = random.randint(0,26)
 haalarimerkit_lista = []
 
 
