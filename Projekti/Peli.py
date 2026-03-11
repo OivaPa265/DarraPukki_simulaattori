@@ -7,9 +7,9 @@ import BEEES
 Yhdiste = mysql.connector.connect(
     host="localhost",
     port=3306,
-    database="demo",# Why do I call it demo it is the real one?
+    database="lisää sun database tähän",
     user="root",
-    password="7523",
+    password="sun salasana",
     autocommit=True,
 )
 # Valitsee 15 satunaista lentokentää suomesta ja lajitelee ne aakkos-järjestyksessä
@@ -417,3 +417,4 @@ while not hävijö:
 # I ICANT I CANT I CANT I CANT I CANT I ICANT I CANT I CANT I CANT I CANT I ICANT I CANT I CANT I CANT I CANT I ICANT I CANT I CANT I CANT I CANT
 # I ICANT I CANT I CANT I CANT I CANT I ICANT I CANT I CANT I CANT I CANT I ICANT I CANT I CANT I CANT I CANT I ICANT I CANT I CANT I CANT I CANT
 # I ICANT I CANT I CANT I CANT I CANT I ICANT I CANT I CANT I CANT I CANT I ICANT I CANT I CANT I CANT I CANT I ICANT I CANT I CANT I CANT I CANT
+
