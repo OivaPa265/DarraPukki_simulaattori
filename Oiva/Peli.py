@@ -6,9 +6,9 @@ import mysql.connector
 Yhdiste = mysql.connector.connect(
     host="localhost",
     port=3306,
-    database="demo",# Why do I call it demo it is the real one?
+    database="lisää sun database tähän",
     user="root",
-    password="7523",
+    password="lisää sun salasana tähän",
     autocommit=True,
 )
 # Valitsee 15 satunaista lentokentää suomesta ja lajitelee ne aakkos-järjestyksessä
@@ -189,5 +189,6 @@ while not hävijö:
     # ei tee mitää
     input(" TEE SIIRTYMINEN SEURAAVAKSI ")
     break
+
 
 
