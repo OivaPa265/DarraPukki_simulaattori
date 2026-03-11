@@ -196,41 +196,7 @@ while not hävijö:
     input(" TEE SIIRTYMINEN SEURAAVAKSI ")
     break
 
-    # FROM THE MOMENT I UNDRESTOOD THE WEAKNESS OF MY CODING IT DISGUSTED ME I CRAVED FOR THE STRENGHT AND CERTANTY OF BEER I ASPIRED TO THE PURITY OF THE BLESSED BEER.
-
-    # YOUR KIND CLING TO YOUR FLESH AS IF IT WILL NOT DECAY AND FAIL YOU  ONE DAY THE CRUDE BIOMASS YOU CALL A TEMPLE WILL WITHER AND YOU WILL BEG MY KIND TO SAVE YOU
-
-    # BUT I AM ALREADT SAVED. FOR THE BEER IS IMMORTAL
-
-    # BLESSED BE THE BEER GOD OMNISSIAH.
-
-    # AND I WILL PRAY THAT THE MACHINE SPIRIT INSIDE MY COMPUTER IS WILLING TO GO THROUGH THIS WITH ME.
-
-          #######################
-       ##############################
-    ####################################
-   ########################################
-  ##########################################
-  ##########################################
- ##########################################
- ###########################################
-  ##########################################
-   ######################################
-   ####         #######      ###    #####
-  ####          ######      #####     #####
-  #####          ########    ###     ######
-   ####       ##############       #####
-     ############      #############
-       ###########     ###########
-           ####################
-             #################
-             ################
-               ###########
-                #########
-
-
-
-
+ 
 import random
 import sys
 
