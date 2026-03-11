@@ -173,18 +173,18 @@ voitto = False
 
 # PERKELE TÄMÄ ON SE PELI
 while not hävijö:
-    # Katoo pelaajan vitun lokaation alkohlin ja liikumis matkan pelissä. eipä vielkää pysty liiku eikö vain hä mikset sä tehnyt sitä hä hä miks sä teit tän hä et sit saanu sitä toimii nii joo muute mitä mun piti ees tehä vittu mä en muista ei helvetti mä en muista miks mä teen tätä 12 aamulla miksne mä tehnyt tätä aikasemmi voi vittu siihen on vaa 9 päivää ei vitttuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+    # katsoo pelaajan lokaation alkohlin sekä liikumis määrän
     tavarat = pelaajan_tavarat(peli_id)
     # määritää paskat pelaajalle
     current_alcohol = tavarat['alcohol']
     current_range = tavarat['player_range']
     current_icao = tavarat['location']
 
-    # hakee jotai vittu
+    # hakee kentän nimen
     kentta_info = get_airport_info(current_icao)
     kentta_nimi = kentta_info[0]['name']
 
-    # tekee ihan VITUN hienon näytö pelaajalle siitä missä hän on VITTU MÄ OON YLPEE TÄST
+    # näytää pelaajalle tämäh nykyiset alkohlin liikmis sekä lokaations
     print("" + "=" * 30)
     print(f" |ALOITUS | DARRAPUKKI SIMULAATORI ID| {peli_id}" "")
     print(f" |SIJAINTI| {kentta_nimi} ({current_icao})")
@@ -192,9 +192,7 @@ while not hävijö:
     print(f" |LIIKUMIS| {current_range}m")
     print("=" * 30)
 
-    # ei tee mitää
-    input(" TEE SIIRTYMINEN SEURAAVAKSI ")
-    break
+ 
 
  
 import random
