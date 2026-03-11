@@ -22,7 +22,10 @@ def tarina():
 
             # jos painoi Y antaa tutorialin
             if uudeleen_kys == "Y":
-                print("Lisää tutorial tähän.")
+                print("Tätä keskeneräistä peliä pelaat näppäimistöllä.\n"
+                      "Sinulle näytetään lista 15 erilaisesta suomen lentokentistä joista valitset mihin haluat mennä\n"
+                      "kun olet valinnut haluamasi kentän kirjoita kentän numero ja paina enter näppäintä\n"
+                      "Tehtäväsi on kerätä x määrä merkkejä")
 
                 # jos painoi N aloitaa pelin
             elif uudeleen_kys == "N":
@@ -48,7 +51,10 @@ def tarina():
 
         elif syote == "TUTORIAL":
             print("" + "=" * 30)
-            print("Lisää tutorial tähän.")
+            print("Tätä keskeneräistä peliä pelaat näppäimistöllä.\n"
+                      "Sinulle näytetään lista 15 erilaisesta suomen lentokentistä joista valitset mihin haluat mennä\n"
+                      "kun olet valinnut haluamasi kentän kirjoita kentän numero ja paina enter näppäintä\n"
+                      "Tehtäväsi on kerätä x määrä merkkejä")
 
         # kysyy jos ymmmärsi
             print("" + "=" * 30)
@@ -69,3 +75,4 @@ def tarina():
             break
 
 tarina()
+
