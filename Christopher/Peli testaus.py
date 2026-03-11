@@ -6,7 +6,7 @@ import mysql.connector
 Yhdiste = mysql.connector.connect(
     host="localhost",
     port=3306,
-    database="lisää sun database tähän",# Why do I call it demo it is the real one?
+    database="lisää sun database tähän",
     user="root",
     password="lisää sun salasana tähän",
     autocommit=True,
