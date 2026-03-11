@@ -60,7 +60,7 @@ def pelin_luonti(alcohol, lento_voima, sijainti, nimi, kentat):
             cursor.execute(sql, (peli_id, uusi_kentat[i]['ident'], goal_id))
     return peli_id
 
-# WHAT THE FUCK DID I WRITE WHY DOSE IT ONLY WORK WHEN LATITUDE AND LONGITUDE ARE THERE THEY NOT
+# katsoo etäisyytä kenttien välillä
 def get_airport_info(icao):
 
     sql = ("SELECT iso_country, ident, name, latitude_deg, longitude_deg "
