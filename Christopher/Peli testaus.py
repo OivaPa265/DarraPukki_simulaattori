@@ -171,9 +171,9 @@ def pelaajan_tavarat(peli_id):
 hävijö = False
 voitto = False
 
-# PERKELE TÄMÄ ON SE PELI
+# peli
 while not hävijö:
-    # katsoo pelaajan lokaation alkohlin sekä liikumis määrän
+    # katsoon pelaajan tavarat
     tavarat = pelaajan_tavarat(peli_id)
     # määritää paskat pelaajalle
     current_alcohol = tavarat['alcohol']
