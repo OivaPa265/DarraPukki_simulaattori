@@ -1,6 +1,10 @@
 # DarraPukki_simulaattori
-Tekijät: Oiva Paatsema, Christopher munday, Rehman Ahdam, Jing Ping
 
+#Features
+ * BackEnd written using python and sql
+ * FrontEnd Written in javascript
+#Authors
+*
 
 
 
