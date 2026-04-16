@@ -3,8 +3,9 @@
 #Features
  * BackEnd written using python and sql
  * FrontEnd Written in javascript
-#Authors
-*
 
+*
+#Authora
+@OivaPa265 (oiva)
 
 
