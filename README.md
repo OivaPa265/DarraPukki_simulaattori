@@ -5,7 +5,5 @@
  * FrontEnd Written in javascript
 
 *
-#Authora
-@OivaPa265 (oiva)
 
 
