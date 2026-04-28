@@ -1,0 +1,33 @@
+def tallenus(peli_id):
+    with open('savegame.txt', 'w') as f:
+        f.write(str(peli_id))
+        print(f'Tallenettin {peli_id} ')
+
+def lataus():
+    if os.path.exists('savegame.txt'):
+        try:
+            with open('savegame.txt', 'r') as f:
+                peli_id = int(f.read())
+                print(f'Latasit {peli_id} ')
+                return peli_id
+        except (ValueError):
+            print('Tämä tallenus ei toimi yritä toista taikka aloita uusi peli')
+            return None
+
+
+
+
+Aikaisempi_peli = lataus()
+if Aikaisempi_peli:
+   propmpt= input(f"Palaat jälleen bileisiin haluatko jatkaa siitämistä jäit? {peli_id} Kyllä/ei")
+   if propmpt == "KYLLÄ":
+       peli_id = Aikaisempi_peli
+       print(f"Jatkat pelin {peli_id} kanssa")
+   else:
+         print("Aloitat uuden pelin")
+
+
+ tallenusaika = input("Haluatko tallentaa pelisi? Kyllä/ei: ").upper()
+        if tallenusaika == "KYLLÄ":
+            tallenus(peli_id)
+            print("Peli tallennettu!")
