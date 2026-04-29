@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="Fi">
+<head>
+    <link rel="stylesheet" href="Slotti css.css">
+    <meta charset="UTF-8">
+    <title>Darrapukki</title>
+</head>
+
+<body>
+<div class="merkit">
+    <div class="slotti" id="slotti1">🍒</div>
+    <div class="slotti" id="slotti2">🍋</div>
+    <div class="slotti" id="slotti3">🍉</div>
+</div>
+
+<div id ="koriste1">
+    <img
+</div>
+
+
+<button onclick="kierros()">Pyöritä</button>
+
+<div class="tulos" id="tulos"></div>
+<script>
+    const symboolit = ["🍒", "🍋", "🍉"];
+
+    function getRandomSymbol() {
+      return symboolit[Math.floor(Math.random() * symboolit.length)];
+    }
+    function kierros() {
+        const slotti1 = document.getElementById("slotti1")
+        const slotti2 = document.getElementById("slotti2")
+        const slotti3 = document.getElementById("slotti3")
+        const tulos = document.getElementById("tulos")
+
+    tulos.textContent = "";
+
+    let kierroksia = 10;
+
+    const interval = setInterval(() => {
+        slotti1.textContent = getRandomSymbol();
+        slotti2.textContent = getRandomSymbol();
+        slotti3.textContent = getRandomSymbol();
+
+        kierroksia--;
+
+        if (kierroksia <= 0) {
+          clearInterval(interval);
+
+          const s1 = slotti1.textContent;
+          const s2 = slotti2.textContent;
+          const s3 = slotti3.textContent;
+
+          if (s1 === s2 && s2 === s3) {
+            tulos.textContent = "🎉 Voitto!";
+          } else {
+            tulos.textContent = "Yritä uudelleen";
+          }
+        }
+      }, 100);
+    }
+
+</script>
+</body>
+</html>
