@@ -1,17 +1,3 @@
-import random
-import Lore
-import mysql.connector
-
-# Muodostaa yhdistyksen tietokantoihin
-Yhdiste = mysql.connector.connect(
-    host="localhost",
-    port=3306,
-    database="demo",# Why do I call it demo it is the real one?
-    user="root",
-    password="7523",
-    autocommit=True,
-)
-
 # Valitsee 15 satunaista lentokentää suomesta ja lajitelee ne aakkos-järjestyksessä
 def lokaatiot():
     sql ="""
@@ -27,27 +13,26 @@ ORDER BY name asc;"""
     cursor.execute(sql)
     return cursor.fetchall()
 
-
 # tekee tehtäviä # no shit - ME 27/2/2026
 def tehtavat():
-    sql = """SELECT * From goal;"""
+    sql = "SELECT * From goal;"
     cursor = Yhdiste.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
     return result
 
 # Määritää pelaajalle tämän aloitus alkoholin (Alkoholia käytetään liikumiseen), pelaajan liikumus pituuden
-def pelin_luonti(start_alcohol, lento_voima, sijainti, nimi, kentat):
+def pelin_luonti(alcohol, lento_voima, sijainti, nimi, kentat):
     cursor = Yhdiste.cursor(dictionary=True)
     sql = "INSERT INTO game (alcohol, player_range, location, screen_name) VALUES (%s, %s, %s, %s);"
-    cursor.execute(sql, (start_alcohol, lento_voima, sijainti, nimi))
+    cursor.execute(sql, (alcohol, lento_voima, sijainti, nimi))
     peli_id = cursor.lastrowid  # Haetaan uuden pelin ID
 
     # Laitaa lentokentille joko: alkoholia, merkin, taikka kelan
     tehtava = tehtavat()
     lista = []
     for goal in tehtava:
-        for i in range(0,goal['probability'], 1):
+        for i in range(0,goal['probability']):
             lista.append(goal['id'])
 
     # Sekoitaa kentät jokaisessa pelin alussa paitsi aloitus kenttä EFHK
@@ -62,35 +47,31 @@ def pelin_luonti(start_alcohol, lento_voima, sijainti, nimi, kentat):
             cursor.execute(sql, (peli_id, uusi_kentat[i]['ident'], goal_id))
     return peli_id
 
+# katsoo etäisyytä kenttien välillä
+def get_airport_info(icao):
 
+    sql = ("SELECT iso_country, ident, name, latitude_deg, longitude_deg "
+           "FROM airport "
+           "WHERE ident = %s")
+    cursor = Yhdiste.cursor(dictionary=True)
+    cursor.execute(sql, (icao,))
+    return cursor.fetchall()
+
+# tee kentän tarkistus jutska
+# juu juu teen teen minä
+def Kentan_tehtava(g_id, cur_airport):
+    sql = f'''SELECT ports.id, goal, goal.id as goal_id, name, alcohol as money 
+    FROM ports 
+    JOIN goal ON goal.id = ports.goal 
+    WHERE game = %s 
+    AND airport = %s'''
+    cursor = Yhdiste.cursor(dictionary=True)
+    cursor.execute(sql, (g_id, cur_airport))
+    result = cursor.fetchone()
+    if result is None:
+        return False
+    return result
 
 kaikki_kentat = lokaatiot()
 
-# Pelin aloitus määrät
-peli_id = pelin_luonti(1000, 2000, "EFHK", "Darrapukki", kaikki_kentat)
-
-currentgoal = 0
-numofgoals = 10  # 10 leiman approt?
-pelaajalista = []
-listofgoals = []
-
-# kysyy pelaajalta haluaako tämä pelin tarinan vai ei
-Tarina = input("Tervetuloa peliin,"
-               " jos tämä on ensimäinen kertasi pelaamassa painakaa enter näppäintä niin saata pelin tarinan."
-               "jos et halua tarinaa ja haluatte suoraan peliin Kirjoitakaa SKIP: ").upper()
-
-# jos pelaaja painaa enter näppäintä näytää pelaajalle Lore scriptin tekstin
-if Tarina == "":
-    for line in Lore.paheelore():
-        print(line)
-
-        # jos pelaaja Kirjoitaa "SKIP" ilman heitto merkkejä skippaa tarinan ja aloitaa pelin
-elif Tarina == "SKIP":
-    print("Onnea peliin ")
-    pass
-
-# tekee pelaajan
-def luo_pelaaja():
-    print(f"Pelaaja: Darrapukki | Peli ID: {peli_id}")
-
-luo_pelaaja()
+sijainti= "EFHK"

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NoppaFront</title>
+    <link rel="stylesheet" href="NoppaTyyli.css">
+</head>
+<body>
+    <div class="peli">
+        <h1>🎲 Noppapeli 🎲</h1>
+        <p>Valitse heittotyylisi:</p>
+
+        <div class="Ohjaus">
+            <button onclick="pelaa(1)">Reilu heitto</button>
+            <button onclick="pelaa(2)" class="Huijaus">Huijaa (Painotettu)</button>
+        </div>
+
+        <div class="visual-area">
+            <div id="pelaaja-noppa" class="dice">-</div>
+            <div id="vastustaja-noppa" class="dice">-</div>
+        </div>
+
+        <div id="pisteet" class="pisteBox">
+            Heitä noppaasi!!!
+        </div>
+    </div>
+
+    <script src="noppajava.js"></script>
+</body>
+</html>
