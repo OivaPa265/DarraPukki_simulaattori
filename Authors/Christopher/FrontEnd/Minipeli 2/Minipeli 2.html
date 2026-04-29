@@ -8,15 +8,14 @@
 <body>
 
 
-<canvas id="canvas" width="1920px" height="1080px"></canvas>
-
+<canvas id="canvas" width="1460px" height="786px"></canvas>
 
 <script>
   const canvas = document.getElementById("canvas")
   const ctx = canvas.getContext("2d")
 
-  let x = 0;
-  let y = 0;
+  let x = 700;
+  let y = 300;
   let vxl = 0;
   let vxr = 0;
   let vyl = 0;
@@ -29,7 +28,8 @@
     x += vxr;
     y += vyl;
     y += vyr;
-    ctx.fillRect(x, y, 50, 50)
+    ctx.font = "50px serif";
+    ctx.fillText("😶‍🌫️", x, y)
     requestAnimationFrame(update)
   }
   update()
