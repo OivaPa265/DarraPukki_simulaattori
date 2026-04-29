@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="Fi">
+<head>
+    <link rel="Stylesheet" href="Mini.css">
+    <meta charset="UTF-8">
+    <title>Darrapukki minipeli</title>
+</head>
+<body>
+
+
+<canvas id="canvas" width="1920px" height="1080px"></canvas>
+
+
+<script>
+  const canvas = document.getElementById("canvas")
+  const ctx = canvas.getContext("2d")
+
+  let x = 0;
+  let y = 0;
+  let vxl = 0;
+  let vxr = 0;
+  let vyl = 0;
+  let vyr = 0;
+
+
+  function update() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    x += vxl;
+    x += vxr;
+    y += vyl;
+    y += vyr;
+    ctx.fillRect(x, y, 50, 50)
+    requestAnimationFrame(update)
+  }
+  update()
+
+  addEventListener("keydown", function(e){
+    if (e.code === 'KeyD') vxr = 5;
+    if (e.code === 'KeyA') vxl = -5;
+    if (e.code === 'KeyW') vyr = -5;
+    if (e.code === 'KeyS') vyl = 5;
+  })
+  addEventListener("keyup", function(e){
+    if (e.code === 'KeyD') vxr = 0;
+    if (e.code === 'KeyA') vxl = 0;
+    if (e.code === 'KeyW') vyr = 0;
+    if (e.code === 'KeyS') vyl = 0;
+  })
+</script>
+</body>
+</html>
