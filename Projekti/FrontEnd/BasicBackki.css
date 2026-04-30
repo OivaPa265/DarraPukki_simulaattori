@@ -1,0 +1,194 @@
+
+/*  nämä määritävät teidän mody ja html tasta*/
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #f1c40f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Comic Sans MS', sans-serif;
+}
+/* Laita sinun minupali ruutu tämän nimen sisään*/
+#minipeli-layout{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #eab105;
+}
+
+#pelikamat::before {
+
+    position: absolute;
+    top: -25px;
+    left: 10px;
+    background: #e74c3c;
+    color: white;
+    padding: 2px 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border: 2px solid black;
+}
+
+/*  Kaikki teidän kuvat tälläisen  classin nimen alle*/
+#pelikamat {
+    background: #000;
+    border: 10px solid #d35400;
+    box-shadow: 15px 15px  rgba(0,0,0,0.3);
+    padding: 20px;
+    display: inline-block;
+    z-index: 10;
+
+
+}
+/*  mikä ikinä teidän */
+#pelikamat-lisäys {
+    width: 500px;
+    height: 500px;
+    background: #222;
+    border: 4px solid white;
+    position: relative;
+    overflow: hidden;
+}
+
+#pelikamat-lisäys::after {
+    content: "";
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    background-size: 100% 3px, 3px 100%;
+    pointer-events: none;
+    z-index: 50;
+}
+
+
+
+/* self explanetory*/
+.peli-alue {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    image-rendering: pixelated;
+}
+
+.game-banner {
+    position: fixed;
+    width: 100%;
+    background: black;
+    color: #f1c40f;
+    text-align: center;
+    padding: 15px 0;
+    font-family: 'Courier New', monospace;
+    font-weight: 900;
+    border-top: 5px solid #e74c3c;
+    border-bottom: 5px solid #e74c3c;
+}
+/* Tekee super siistin backroundin*/
+.Liikuvatausta {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.2;
+}
+/* Backgroudnin patterni*/
+.Liikumis-pattern {
+    width: 200%;
+    height: 200%;
+    background-image: radial-gradient(#b83a04 18%, transparent 19%);
+    background-size: 40px 40px;
+
+    animation: scrollDiag 30s linear infinite;
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+/* BAckgrounidn framet*/
+@keyframes scrollDiag {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-40px, -40px); }
+}
+/* Super siisti buutti screeni*/
+
+#bootti{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeOutBoot 0.5s forwards;
+    animation-delay: 1.5s;
+    pointer-events: none;
+}
+/* Bootti screenin teksti*/
+.bootti-content {
+    text-align: center;
+    color: #f1c40f;
+    font-family: 'Courier New', Courier, monospace;
+}
+/*  siisti logo*/
+.Tektsi {
+    font-size: 2.5rem;
+    letter-spacing: 5px;
+    margin-bottom: 20px;
+    animation: logoGlitchi 0.2s infinite alternate;
+}
+/* Self explanetory*/
+
+.loading-bar {
+    width: 250px;
+    height: 8px;
+    border: 2px solid #f1c40f;
+    margin: 0 auto;
+}
+/* Bari liikkuu*/
+.progress {
+    height: 100%;
+    background: #f1c40f;
+    width: 0;
+    animation: fillBar 3s forwards;
+}
+/* Baari täytyy*/
+@keyframes fillBar {
+    0% { width: 0; }
+    100% { width: 100%; }
+}
+/* Fadu outaa teidän ruutuun*/
+@keyframes fadeOutBoot {
+    0% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+/* SICK*/
+@keyframes logoGlitchi {
+    from { transform: skewX(0deg); }
+    to { transform: skewX(3deg); opacity: 0.9; }
+}
+
+
+
+/*  bannereiden korkeudet ruudussa */
+.yla { top: 0; }
+.ala { bottom: 0; }
