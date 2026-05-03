@@ -12,4 +12,4 @@ Currently implemented features present include
 
 
 # Authors
-[Oiva](https://github.com/OivaPa265)
+[OivaPa265](https://github.com/OivaPa265)
