@@ -12,9 +12,9 @@ Currently implemented features present include
 
 
 # Authors
-[OivaPa265](https://github.com/OivaPa265)(Oiva)
-[Rehmannae](https://github.com/Rehmanae)(Rehman)
-[ChristopherMunday](https://github.com/ChristopherMunday)(Christopher)
-[Jingping1](https://github.com/jingping1)(Jing)
-[Benjnurmi](https://github.com/Benjnurmi)(Benjamin)("Emotional Support")
+- [OivaPa265](https://github.com/OivaPa265)(Oiva)
+- [Rehmannae](https://github.com/Rehmanae)(Rehman)
+- [ChristopherMunday](https://github.com/ChristopherMunday)(Christopher)
+- [Jingping1](https://github.com/jingping1)(Jing)
+- [Benjnurmi](https://github.com/Benjnurmi)(Benjamin "Emotional Support"   )
 
