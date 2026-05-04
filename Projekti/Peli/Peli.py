@@ -1,3 +1,7 @@
+# Here is the basic backend pythong script that creates 15 randomized locations from finnish airport icao's
+#it also caontaisn the players movement distance and numebr of goals gathered
+# it creates a connectiong to an Api connector to get an connection to the front end
+
 import random
 import mysql.connector
 from flask import Flask, jsonify, request
