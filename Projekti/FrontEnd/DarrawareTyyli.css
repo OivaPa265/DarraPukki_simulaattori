@@ -1,0 +1,320 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: 'Comic Sans MS', 'Arial', sans-serif;
+}
+
+.Title {
+    font-size: 5rem;
+    line-height: 0.8;
+    text-align: center;
+    color: #e74c3c;
+    -webkit-text-stroke: 4px black;
+    text-shadow: 8px 8px 0px #000;
+    margin-bottom: 20px;
+    animation: titleFloat 3s ease-in-out infinite;
+    text-transform: uppercase;
+}
+
+#bootti-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeOutBoot 1s forwards;
+    animation-delay: 3.5s;
+}
+
+.bootti-content {
+    text-align: center;
+    color: #f1c40f;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.logo {
+    letter-spacing: 10px;
+    margin-bottom: 20px;
+    animation: logoGlitch 0.2s infinite alternate;
+}
+
+.loading-bar {
+    width: 300px;
+    height: 10px;
+    border: 2px solid #f1c40f;
+    margin: 0 auto;
+}
+
+.progress {
+    height: 100%;
+    background: #f1c40f;
+    width: 0;
+    animation: fillBar 3s forwards;
+}
+
+
+@keyframes fillBar {
+
+    100% { width: 100%; }
+}
+
+@keyframes fadeOutBoot {
+    to { opacity: 0; visibility: hidden; }
+}
+
+@keyframes logoGlitch {
+    from { transform: skewX(0deg); }
+    to { transform: skewX(2deg); opacity: 0.8; }
+}
+
+#alku-valikko {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position:relative;
+    z-index: 1;
+    justify-content: center;
+    gap: 50px;
+    height: 100vh;
+    padding: 0px 40px;
+    box-sizing: border-box;
+
+
+    background-color: #f1c40f;
+    background-image: radial-gradient(#d35400 15%, transparent 16%);
+    background-size: 25px 25px;
+}
+
+#alku-valikko::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.4) 150%);
+    pointer-events: none;
+    z-index: 50;
+}
+
+.KeskiOsio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.KeskiOsio::before {
+    content: "";
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    background: repeating-conic-gradient(from 0deg, transparent 0deg 15deg, rgba(255,255,255,0.2) 16deg 30deg);
+    z-index: -1;
+    animation: rotateBurst 20s linear infinite;
+}
+
+
+
+
+.menu-sivu-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 10;
+}
+
+.menu-sivu-bar button {
+    background: #00a8ff;
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: 900;
+    padding: 20px 40px;
+    cursor: pointer;
+    box-shadow: 8px 8px 0px black;
+    transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+
+
+.menu-sivu-bar button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 5px solid black;
+    pointer-events: none;
+}
+
+
+.menu-sivu-bar button:hover {
+    transform: scale(1.1) rotate(0deg) !important;
+    background: #2ecc71;
+    box-shadow: 12px 12px 0px black;
+    z-index: 20;
+}
+
+
+.menu-sivu-bar button:active {
+    transform: scale(1.05) rotate(-2deg) translate(4px, 4px) !important;
+    box-shadow: 2px 2px 0px black;
+}
+
+.menu-sivu-bar button:nth-child(odd) { transform: rotate(-2deg); }
+.menu-sivu-bar button:nth-child(even) { transform: rotate(1deg); }
+
+
+
+
+
+
+@keyframes title {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+
+.yla, .ala {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    background: black;
+    color: #f1c40f;
+    font-weight: bold;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 1.2rem;
+    letter-spacing: 5px;
+    z-index: 100;
+}
+
+.yla{ top: 0; }
+.ala { bottom: 0; }
+
+
+.DarraPukkiRuutu {
+    width: 800px;
+    height: 550px;
+    border: 10px solid black;
+    background-color: #000;
+    z-index: 5;
+    box-shadow: 15px 15px 0px rgba(0,0,0,0.3);
+    position: relative;
+    transform: perspective(1000px) rotateY(-5deg);
+    overflow: hidden;
+    animation: tvFlicker 0.1s infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.DarraPukkiRuutu::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    background-size: 100% 4px, 3px 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+
+
+.DarraPukkiRuutu::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+
+
+
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+
+.LiikuvaTausta {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0.15;
+}
+
+@keyframes scroll {
+    from { transform: translate(0, 0); }
+    to { transform: translate(100px, -100px); }
+}
+
+.patternni {
+    width: 100%;
+    height: 100%;
+
+    background-image: radial-gradient(circle, #000 10%, transparent 11%);
+    background-size: 100px 100px;
+    animation: scrollDiag 5s linear infinite;
+}
+
+
+
+
+@keyframes tv {
+    0% { opacity: 0.99; }
+    50% { opacity: 1; }
+    100% { opacity: 0.98; }
+}
+
+
+.tv-gif {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    z-index: 6;
+    animation: gif 8s infinite steps(1);
+}
+
+.tv-gif:nth-child(1) { animation-delay: 0s; }
+.tv-gif:nth-child(2) { animation-delay: 2s; }
+.tv-gif:nth-child(3) { animation-delay: 4s; }
+.tv-gif:nth-child(4) { animation-delay: 6s; }
+
+@keyframes gif {
+    0%, 24.9% {
+        opacity: 1;
+        visibility: visible;
+    }
+    25%, 100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+
+
