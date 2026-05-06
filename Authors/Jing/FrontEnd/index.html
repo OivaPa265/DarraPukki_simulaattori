@@ -3,38 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Sudoku 4x4</title>
-    <!-- Link to your CSS file for styling -->
+    <title>Ultimate 4x4 Sudoku</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="game-container">
-        <h1>Mini Sudoku 4x4</h1>
+<div class="game-header">
+    <h1>Sudoku Challenge</h1>
+    <div id="mistake-display">Mistakes: 0 / 2</div>
+</div>
 
-        <!-- The Main Sudoku Board -->
-        <div id="sudoku-board" class="grid-4x4">
-            <!-- 16 cells will be generated here by JavaScript later -->
-        </div>
+<div id="sudoku-board" class="grid-4x4"></div>
 
-        <!-- Message Area (for feedback) -->
-        <div id="message-area">
-            <p id="top-msg"></p>
-            <p id="bottom-msg">Ready to play!</p>
-        </div>
-
-        <!-- Control Panel (User input section) -->
-        <div class="controls">
-            <div class="input-group">
-                <input type="number" id="row-input" placeholder="Row (0-3)" min="0" max="3">
-                <input type="number" id="col-input" placeholder="Col (0-3)" min="0" max="3">
-                <input type="number" id="num-input" placeholder="Num (1-4)" min="1" max="4">
-            </div>
-            <button id="submit-btn">Place Number</button>
-        </div>
+<div id="input-panel">
+    <p>Editing: <span id="pos-info" style="font-weight:bold;"></span></p>
+    <input type="number" id="num-input" min="1" max="4" placeholder="1-4">
+    <div class="button-group">
+        <button class="btn btn-confirm" onclick="submitMove()">Confirm</button>
+        <button class="btn btn-clear" onclick="eraseCell()">Clear</button>
     </div>
+</div>
 
-    <!-- Link to your JavaScript file for logic -->
-    <script src="script.js"></script>
+<!-- Win/Loss Overlays -->
+<div id="win-overlay" class="overlay">
+    <h1 style="color: #2ecc71;">YOU WIN!</h1>
+    <button class="btn btn-confirm" onclick="location.reload()">Play Again</button>
+</div>
+
+<div id="lose-overlay" class="overlay">
+    <h1 style="color: #e74c3c;">GAME OVER</h1>
+    <button class="btn btn-clear" onclick="location.reload()">Try Again</button>
+</div>
+
+<!-- 脚本引入 -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>

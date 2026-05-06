@@ -1,159 +1,126 @@
-// 1. 基础数据 (The Core Data)
-let board = [
+// 1. 标准底盘（绝对正确）
+let solution = [
     [1, 2, 3, 4],
     [3, 4, 1, 2],
     [2, 1, 4, 3],
     [4, 3, 2, 1]
 ];
-let isFixed = [
-    [false, false, false, false],
-    [false, false, false, false],
-    [false, false, false, false],
-    [false, false, false, false]
-];
 
-// 记录当前选中的位置 (-1 表示未选中)
-let selectedRow = -1;
-let selectedCol = -1;
+let board = [];
+let isFixed = [];
+let selR = -1, selC = -1, mistakes = 0;
 
-// 2. 初始化游戏 (Initialize)
-function initGame() {
-    shuffleBoard();
-    generatePuzzle();
-    renderBoard();
-}
-
-function shuffleBoard() {
-    for (let i = 0; i < 10; i++) {
-        let area = Math.floor(Math.random() * 2) * 2;
-        let r1 = area + Math.floor(Math.random() * 2);
-        let r2 = area + Math.floor(Math.random() * 2);
-        [board[r1], board[r2]] = [board[r2], board[r1]];
+// 音效引擎
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playSound(type) {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    if (type === 'click') {
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+    } else if (type === 'success') {
+        osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.2);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+    } else if (type === 'fail') {
+        osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(50, audioCtx.currentTime + 0.5);
+        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.5);
     }
 }
 
-function generatePuzzle() {
-    let holes = 8;
-    while (holes > 0) {
+// 初始化游戏
+function initGame() {
+    // A. 随机置换数字 (1-4 随机映射)
+    let mapping = [1, 2, 3, 4].sort(() => Math.random() - 0.5);
+
+    // B. 生成当前关卡的完整答案
+    board = solution.map(row => row.map(val => mapping[val - 1]));
+
+    // C. 深度克隆一份答案用来校验
+    const finalAnswers = board.map(row => [...row]);
+
+    // D. 挖洞 (移除8个数字)
+    let holes = 0;
+    isFixed = Array(4).fill().map(() => Array(4).fill(false));
+
+    while(holes < 8) {
         let r = Math.floor(Math.random() * 4);
         let c = Math.floor(Math.random() * 4);
-        if (board[r][c] !== 0) {
+        if(board[r][c] !== 0) {
             board[r][c] = 0;
-            holes--;
+            holes++;
         }
     }
-    for (let r = 0; r < 4; r++) {
-        for (let c = 0; c < 4; c++) {
-            if (board[r][c] !== 0) isFixed[r][c] = true;
+
+    // E. 标记固定数字
+    for(let r=0; r<4; r++) {
+        for(let c=0; c<4; c++) {
+            if(board[r][c] !== 0) isFixed[r][c] = true;
+        }
+    }
+
+    // 将正确答案挂载到全局方便校验
+    window.correctSolution = finalAnswers;
+    render();
+}
+
+function render() {
+    const container = document.getElementById('sudoku-board');
+    container.innerHTML = '';
+    for(let r=0; r<4; r++) {
+        for(let c=0; c<4; c++) {
+            const div = document.createElement('div');
+            div.className = 'cell' + (isFixed[r][c] ? ' fixed' : '') +
+                            (r === selR && c === selC ? ' selected' : '') +
+                            (board[r][c] !== 0 && !isFixed[r][c] ? ' player-input' : '');
+            div.innerText = board[r][c] === 0 ? '' : board[r][c];
+            div.onclick = () => { if(!isFixed[r][c]) handleSelect(r, c); };
+            container.appendChild(div);
         }
     }
 }
 
-// 3. 渲染棋盘 (Render - Added Click Interaction)
-function renderBoard() {
-    const boardElement = document.getElementById('sudoku-board');
-    boardElement.innerHTML = '';
-
-    for (let r = 0; r < 4; r++) {
-        for (let c = 0; c < 4; c++) {
-            const cell = document.createElement('div');
-            cell.classList.add('cell');
-
-            // 如果这个格子被选中了，加上 selected 样式
-            if (r === selectedRow && c === selectedCol) {
-                cell.classList.add('selected');
-            }
-
-            if (isFixed[r][c]) {
-                cell.classList.add('fixed');
-                cell.innerText = board[r][c];
-            } else if (board[r][c] !== 0) {
-                cell.classList.add('player-input');
-                cell.innerText = board[r][c];
-            }
-
-            // 点击格子的监听器
-            cell.addEventListener('click', () => {
-                if (isFixed[r][c]) return; // 固定数字点不动
-                selectedRow = r;
-                selectedCol = c;
-                renderBoard(); // 重新渲染以显示选中高亮
-            });
-
-            boardElement.appendChild(cell);
-        }
-    }
+function handleSelect(r, c) {
+    playSound('click');
+    selR = r; selC = c;
+    const panel = document.getElementById('input-panel');
+    panel.classList.add('active');
+    document.getElementById('pos-info').innerText = `Row ${r+1}, Col ${c+1}`;
+    document.getElementById('num-input').value = board[r][c] === 0 ? '' : board[r][c];
+    render();
 }
 
-// 4. 校验逻辑 (Validation)
-function isValid(row, col, num) {
-    // 检查行
-    for (let i = 0; i < 4; i++) {
-        if (i !== col && board[row][i] === num) return false;
-    }
-    // 检查列
-    for (let i = 0; i < 4; i++) {
-        if (i !== row && board[i][col] === num) return false;
-    }
-    // 检查 2x2 宫
-    let sr = Math.floor(row / 2) * 2;
-    let sc = Math.floor(col / 2) * 2;
-    for (let i = 0; i < 2; i++) {
-        for (let j = 0; j < 2; j++) {
-            if ((sr + i !== row || sc + j !== col) && board[sr + i][sc + j] === num) return false;
-        }
-    }
-    return true;
-}
+function submitMove() {
+    const val = parseInt(document.getElementById('num-input').value);
+    if(isNaN(val) || val < 1 || val > 4) return;
 
-// 5. 核心填数动作 (Core Move Logic)
-function handleMove(r, c, n) {
-    const topMsg = document.getElementById('top-msg');
-    const bottomMsg = document.getElementById('bottom-msg');
-    topMsg.innerText = '';
-
-    if (isValid(r, c, n)) {
-        board[r][c] = n;
-        topMsg.innerText = `[Success] Placed ${n} at (${r}, ${c})`;
-        bottomMsg.innerText = '[Success]';
-        renderBoard();
-
-        if (isFinished()) {
-            bottomMsg.innerText = 'CONGRATULATIONS! YOU WIN!';
+    // 校验：填入的数字必须和我们预设的正确答案一致
+    if(val === window.correctSolution[selR][selC]) {
+        playSound('success');
+        board[selR][selC] = val;
+        render();
+        if(!board.flat().includes(0)) {
+            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+            document.getElementById('win-overlay').style.display = 'flex';
         }
     } else {
-        bottomMsg.innerText = '[Error] Invalid move! Conflict detected.';
+        playSound('fail');
+        mistakes++;
+        document.getElementById('mistake-display').innerText = `Mistakes: ${mistakes} / 2`;
+        if(mistakes >= 2) document.getElementById('lose-overlay').style.display = 'flex';
     }
 }
 
-function isFinished() {
-    for (let r = 0; r < 4; r++) {
-        if (board[r].includes(0)) return false;
-    }
-    return true;
+function eraseCell() {
+    playSound('click');
+    board[selR][selC] = 0;
+    document.getElementById('num-input').value = '';
+    render();
 }
-
-// 6. 键盘监听 (Keyboard Listener)
-document.addEventListener('keydown', (event) => {
-    if (selectedRow === -1 || selectedCol === -1) return;
-
-    if (event.key >= '1' && event.key <= '4') {
-        handleMove(selectedRow, selectedCol, parseInt(event.key));
-    } else if (event.key === 'Backspace' || event.key === 'Delete') {
-        board[selectedRow][selectedCol] = 0;
-        renderBoard();
-    }
-});
-
-// 7. 保留原本的按钮点击功能 (为了兼容你之前的界面)
-document.getElementById('submit-btn').addEventListener('click', () => {
-    const r = parseInt(document.getElementById('row-input').value);
-    const c = parseInt(document.getElementById('col-input').value);
-    const n = parseInt(document.getElementById('num-input').value);
-
-    if (!isNaN(r) && !isNaN(c) && !isNaN(n)) {
-        handleMove(r, c, n);
-    }
-});
 
 initGame();

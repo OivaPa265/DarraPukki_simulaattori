@@ -1,103 +1,57 @@
-/* 1. 基础布局保持不变 */
+:root {
+    --bg-color: #f8f9fa;
+    --primary-color: #007bff;
+    --success-color: #28a745;
+    --error-color: #dc3545;
+    --text-color: #343a40;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    background-color: #f4f4f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex; flex-direction: column; align-items: center;
+    background-color: var(--bg-color); color: var(--text-color);
 }
 
-.game-container {
-    text-align: center;
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
+.game-header { margin-top: 30px; text-align: center; }
+#mistake-display { font-weight: bold; color: var(--error-color); margin-bottom: 10px; }
 
-/* 2. 棋盘容器优化 */
 .grid-4x4 {
-    display: grid;
-    grid-template-columns: repeat(4, 60px); /* 稍微调大一点格子 */
-    grid-template-rows: repeat(4, 60px);
-    justify-content: center;
-    margin: 20px auto;
-    /* 使用 box-sizing 确保边框不撑破容器 */
-    box-sizing: border-box;
-    border: 3px solid #333; /* 最外层加粗 */
+    display: grid; grid-template-columns: repeat(4, 70px); grid-template-rows: repeat(4, 70px);
+    gap: 3px; background-color: #333; border: 5px solid #333;
+    border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin: 20px auto;
 }
 
-/* 3. 格子逻辑优化 */
 .cell {
-    width: 60px;
-    height: 60px;
-    border: 1px solid #ccc;
-    box-sizing: border-box; /* 关键：让边框在格子内部 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    font-weight: bold;
+    width: 70px; height: 70px; background-color: #fff;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 28px; font-weight: bold; cursor: pointer; transition: all 0.2s;
 }
 
-/* 4. 精准实现 2x2 分界线 */
-/* 选中第2列和第4列的格子，加粗右边框 */
-.cell:nth-child(2n) {
-    border-right: 3px solid #333;
-}
-/* 选中第5-8个格子（即第二行），加粗底边框 */
-.cell:nth-child(n+5):nth-child(-n+8) {
-    border-bottom: 3px solid #333;
-}
-/* 去掉最后一列和最后一行的外溢粗线，防止和外边框打架 */
-.cell:nth-child(4n) { border-right: 1px solid #ccc; }
-.cell:nth-child(n+13) { border-bottom: 1px solid #ccc; }
+.cell:hover { background-color: #f1f3f5; }
+.fixed { background-color: #e9ecef; color: #495057; cursor: not-allowed; }
+.selected { background-color: #fff3cd !important; outline: 4px solid #ffc107; z-index: 10; }
+.player-input { color: var(--primary-color); }
 
-/* 5. 颜色区分 */
-.cell.fixed {
-    background-color: #f0f0f0;
-    color: #444;
+#input-panel {
+    background: white; padding: 20px; border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-top: 20px;
+    text-align: center; display: none;
 }
-.cell.player-input {
-    color: #007bff;
+#input-panel.active { display: block; }
+
+input[type="number"] {
+    width: 60px; padding: 10px; font-size: 20px; text-align: center;
+    border: 2px solid #ddd; border-radius: 6px; margin-bottom: 10px;
 }
 
-}
-/* 6. 输入控件优化 */
-.input-group {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 15px;
-}
+.btn { padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.btn-confirm { background: var(--success-color); color: white; }
+.btn-clear { background: #6c757d; color: white; }
 
-input {
-    width: 80px; /* 调宽一点，让 Placeholder 显示全 */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    text-align: center;
+.overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); display: none;
+    flex-direction: column; justify-content: center; align-items: center;
+    z-index: 100; color: white;
 }
-
-button {
-    width: 260px; /* 让按钮和输入组同宽 */
-    padding: 12px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    background-color: #218838;
-}
-/* 添加在 style.css 末尾 */
-.cell.selected {
-    background-color: #fff3cd; /* 淡淡的黄色 */
-    outline: 2px solid #ffc107; /* 金色边框 */
-    z-index: 10; /* 确保边框显示在最上面 */
+.overlay h1 { font-size: 60px; margin-bottom: 20px; }
