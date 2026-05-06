@@ -17,11 +17,11 @@
 
    <div id="alku-valikko">
       <div class="menu-side-bar">
+<button class="menu-nappi" onclick="Random()">RANDOM</button>
+<button class="menu-nappi" onclick="">TEKSTII</button>
+<button class="menu-nappi" onclick="">TEKSTII</button>
 
-            <button onclick="location.href='http://localhost:63342/sgl/DarraWare/Peli1.html?_ijt=ef6is1fet45q6b5se8726635l5&_ij_reload=RELOAD_ON_SAVE'">Peli1</button>
-            <button onclick="location.href='http://localhost:63342/sgl/DarraWare/Peli2.html?_ijt=h76in61ng2u7opt41btk7ob7rb&_ij_reload=RELOAD_ON_SAVE'">Peli2</button>
-            <button onclick="location.href='http://localhost:63342/sgl/DarraWare/Peli3.html?_ijt=q8vtt82bc661j164c7ku5e3hsr&_ij_reload=RELOAD_ON_SAVE'">Peli3</button>
-            <button onclick="location.href='http://localhost:63342/sgl/DarraWare/Peli4.html?_ijt=kpk8tvn6pg2ca7dstoasrbv1qu&_ij_reload=RELOAD_ON_SAVE'">Peli4</button>
+            <button onclick=" location.href='http://localhost:63342/sgl/Projekti/Visuaali/Html_pelille.html?_ijt=hr7gdssua7q11sclonvv5o08ue&_ij_reload=RELOAD_ON_SAVE'"> Takasin</button>
 
         </div>
 
@@ -42,12 +42,36 @@
         <div class="yla">*** DARRAWARE *** DARRAWARE ***</div>
         <div class="ala"> • HAASTA MINIPELIT! • RYHMÄ-4 • KESTÄTKÖ HAASTEET? •</div>
 
-
         <div class="center-content">
-           
+
             <div class="DarraPukkiRuutu"></div>
         </div>
     </div>
+
+<script>
+    function Random(){
+        const pelit = [
+            'Peli1.html',
+            'Peli2.html',
+            'Peli3.html',
+            'Christopher.html',
+            'Rehman.html',
+            'Rehman2.html',
+            'Jing.html',
+
+        ];
+
+        const arpa = Math.floor(Math.random() * pelit.length);
+        const valittuPeli = pelit[arpa];
+
+
+        window.location.href = valittuPeli;
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentIcao = urlParams.get('icao');
+    console.log(`Pelaaja on kentällä: ${currentIcao}`);
+</script>
 
 </body>
 </html>
