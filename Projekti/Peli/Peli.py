@@ -1,7 +1,3 @@
-# Here is the basic backend pythong script that creates 15 randomized locations from finnish airport icao's
-#it also caontaisn the players movement distance and numebr of goals gathered
-# it creates a connectiong to an Api connector to get an connection to the front end
-
 import random
 import mysql.connector
 from flask import Flask, jsonify, request
@@ -27,18 +23,18 @@ Yhdiste = mysql.connector.connect(
 
 # Valitsee 15 satunaista lentokentää suomesta ja lajitelee ne aakkos-järjestyksessä
 def lokaatiot():
-    sql ="""
-SELECT * FROM(
-SELECT iso_country, ident, name
-FROM airport
-WHERE iso_country ="FI"
-ORDER by iso_country desc, rand()
-LIMIT 15
-) AS airports
-ORDER BY name asc;"""
+    # We select coordinates here so they are available for distance math later
+    sql = """
+    SELECT ident, name, latitude_deg, longitude_deg 
+    FROM airport 
+    WHERE iso_country ="FI" 
+    ORDER BY rand() 
+    LIMIT 15;"""
     cursor = Yhdiste.cursor(dictionary=True)
     cursor.execute(sql)
-    return cursor.fetchall()
+    result = cursor.fetchall()
+    cursor.close()
+    return result
 
 # tekee tehtäviä # no shit - ME 27/2/2026
 def tehtavat():
@@ -75,14 +71,13 @@ def pelin_luonti(alcohol, lento_voima, sijainti, nimi, kentat):
     return peli_id
 
 # katsoo etäisyytä kenttien välillä
-def get_airport_info(icao):
-
-    sql = ("SELECT iso_country, ident, name, latitude_deg, longitude_deg "
-           "FROM airport "
-           "WHERE ident = %s")
+def kentta_info(icao):
+    sql = "SELECT ident, name, latitude_deg, longitude_deg FROM airport WHERE ident = %s"
     cursor = Yhdiste.cursor(dictionary=True)
     cursor.execute(sql, (icao,))
-    return cursor.fetchall()
+    result = cursor.fetchall()
+    cursor.close()
+    return result
 
 # tee kentän tarkistus jutska
 # juu juu teen teen minä
@@ -99,35 +94,44 @@ def Kentan_tehtava(g_id, cur_airport):
         return False
     return result
 
-def Liikuminen(peli_id, target_icao):
-    state = pelaajan_tavarat(peli_id)
+#Liikuminen
 
+def liikuminen(peli_id, target_icao):
+    state = pelaajan_tavarat(peli_id)
     current_icao = state["location"]
     current_range = state["player_range"]
     current_alcohol = state["alcohol"]
 
-    old_info = get_airport_info(current_icao)
-    new_info = get_airport_info(target_icao)
+    v_info = kentta_info(current_icao)
+    t_info = kentta_info(target_icao)
 
-    lat1, lon1 = old_info[0]['latitude_deg'], old_info[0]['longitude_deg']
-    lat2, lon2 = new_info[0]['latitude_deg'], new_info[0]['longitude_deg']
+    if not v_info or not t_info:
+        return {"error": "Kenttää ei löytynyt"}
 
-    distance = int(((lat2-lat1)**2 + (lon2-lon1)**2)**0.5 * 300)
+    lat1, lon1 = v_info[0]['latitude_deg'], v_info[0]['longitude_deg']
+    lat2, lon2 = t_info[0]['latitude_deg'], t_info[0]['longitude_deg']
 
-    if distance > current_range:
-        return {"error": "LiianKaukana"}
+    # Pythagorean distance (simple approximation)
+    distance = int(((lat2 - lat1) ** 2 + (lon2 - lon1) ** 2) ** 0.5 * 300)
 
+    # Manual fuel cost: distance / 10, minimum 200
     alcohol_used = max(200, int(distance / 10))
+
+    if current_alcohol < alcohol_used:
+        return {"error": "Ei tarpeeksi alkoholia!"}
+
     new_alcohol = current_alcohol - alcohol_used
 
     cursor = Yhdiste.cursor(dictionary=True)
     sql = "UPDATE game SET location = %s, alcohol = %s WHERE id = %s"
     cursor.execute(sql, (target_icao, new_alcohol, peli_id))
+    cursor.close()
 
     return {
-        "message": "Liikui",
+        "status": "success",
         "Matka": distance,
-        "AlkoholiaJäljellä": new_alcohol
+        "AlkoholiaJäljellä": new_alcohol,
+        "UusiSijainti": target_icao
     }
 
 # katsoo pelaajan tavarat ja sijainnin
@@ -135,11 +139,14 @@ def pelaajan_tavarat(peli_id):
     cursor = Yhdiste.cursor(dictionary=True)
     sql = "SELECT alcohol, player_range, location FROM game WHERE id = %s"
     cursor.execute(sql, (peli_id,))
-    return cursor.fetchone()
+    result = cursor.fetchone()
+    cursor.close() # <--- MUST HAVE THIS
+    return result
 
 
+# Aloitaa pelin
 @app.route("/start", methods=["POST"])
-def Pelin_aloitus():
+def pelin_aloitus():
     data = request.json
     nimi = data.get("name", "Darrapukki")
 
@@ -149,17 +156,18 @@ def Pelin_aloitus():
     return jsonify({"game_id": peli_id})
 
 
+#katsoo mepljaaan staten akak sen tavarat
 @app.route("/state/<int:peli_id>", methods=["GET"])
 def state(peli_id):
     return jsonify(pelaajan_tavarat(peli_id))
 
-
+# Hakee kentät
 @app.route('/airports', methods=['GET'])
-def Hae_Kentat():
+def hae_kentat():
     data = lokaatiot()
     result = []
     for a in data:
-        info = get_airport_info(a['ident'])
+        info = kentta_info(a['ident'])
         if info:
             result.append(info[0])
     return jsonify(result)
