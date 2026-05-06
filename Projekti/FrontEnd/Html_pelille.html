@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Darrapukki Game</title>
+</head>
+<body>
+    <h1>Lentokentät</h1>
+    <button onclick="load()">Hae Kentät</button>
+    <ul id="airport-list"></ul>
+
+
+</body>
+
+
+<script>
+
+let currentGameId = 1;
+
+async function load() {
+    const response = await fetch('http://127.0.0.1:5000/airports');
+    const airports = await response.json();
+    const listElement = document.getElementById('airport-list');
+    listElement.innerHTML = "";
+
+    airports.forEach(airport => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = `Fly to ${airport.name} (${airport.ident})`;
+        btn.onclick = () => lenna(airport.ident);
+        li.appendChild(btn);
+        listElement.appendChild(li);
+    });
+}
+
+async function lenna(icao) {
+    try {
+        console.log(`Siirrytään ${icao}...`);
+        const response = await fetch(`http://127.0.0.1:5000/move_player/${currentGameId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ new_icao: icao })
+        });
+
+        const result = await response.json();
+
+        if (result.error) {
+            alert("Lento epäonnistui: " + result.error);
+        } else {
+            console.log("Siirtymä toimii", result);
+            window.location.href = `DarraWare/DarraWare.html?icao=${icao}&peli_id=${currentGameId}`;
+        }
+    } catch (error) {
+        console.error("Ei toimi:", error);
+        alert("Ei toimi - olikos serveri päällä?");
+    }
+}
+
+async function testConnection() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/airports');
+        if (response.ok) console.log("API Connection: Toimii");
+    } catch (e) {
+        console.error("API Connection: Epäonnistui");
+    }
+}
+
+
+
+
+testConnection();
+
+
+</script>
+</html>

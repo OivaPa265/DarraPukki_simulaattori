@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Ruletti peli</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="game-box">
+    <h1>Ruletti peli</h1>
+    <p class="tavoite">Voita haalarimerkki!</p>
+
+    <!-- Nuoli näyttää mihin ruletti pysähtyy -->
+    <div class="nuoli">▼</div>
+
+    <!-- Rulettipyörä ja vaihtoehdot -->
+    <div id="wheel">
+        <div class="teksti yksi">
+            <img src="{{ url_for('static', filename='merkki1.png') }}" class="merkkiKuva">
+        </div>
+
+        <div class="teksti kaksi">😢 Ei mitään</div>
+
+        <div class="teksti kolme">
+            <img src="{{ url_for('static', filename='merkki2.png') }}" class="merkkiKuva">
+        </div>
+
+        <div class="teksti nelja">🔁 Uudestaan</div>
+
+        <div class="teksti viisi">☕ Kahvi</div>
+
+        <div class="teksti kuusi">🍬 Karkki</div>
+
+        <div class="teksti seitseman">🎟️ Alennus</div>
+
+        <div class="teksti kahdeksan">💀 Hävisit</div>
+    </div>
+        <button onclick="pyorita()">Pyöritä</button>
+
+        <!-- Tulos tulee tähän -->
+        <h2 id="tulos">Tulos: -</h2>
+
+    <!-- Tämä on oma popup-laatikko tulokselle. -->
+    <div id="popup">
+        <div id="popupBox">
+            <div id="popupHeader">Tulos</div>
+            <div id="popupResult">-</div>
+
+            <!-- Tämä näyttää merkin kuvan popupissa -->
+            <img id="popupKuva" src="" alt="merkki1">
+            <button onclick="suljePopup()">Sulje</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
