@@ -17,7 +17,7 @@ body, html {
     text-transform: uppercase;
 }
 
-#boot-screen {
+#bootti-screen {
     position: fixed;
     top: 0;
     left: 0;
@@ -32,13 +32,13 @@ body, html {
     animation-delay: 3.5s;
 }
 
-.boot-content {
+.bootti-content {
     text-align: center;
     color: #f1c40f;
     font-family: 'Courier New', Courier, monospace;
 }
 
-.studio-logo {
+.logo {
     letter-spacing: 10px;
     margin-bottom: 20px;
     animation: logoGlitch 0.2s infinite alternate;
@@ -103,7 +103,7 @@ body, html {
     z-index: 50;
 }
 
-.center-content {
+.KeskiOsio {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -111,7 +111,7 @@ body, html {
     position: relative;
 }
 
-.center-content::before {
+.KeskiOsio::before {
     content: "";
     position: absolute;
     width: 800px;
@@ -124,14 +124,14 @@ body, html {
 
 
 
-.menu-side-bar {
+.menu-sivu-bar {
     display: flex;
     flex-direction: column;
     gap: 20px;
     z-index: 10;
 }
 
-.menu-side-bar button {
+.menu-sivu-bar button {
     background: #00a8ff;
     color: white;
     border: none;
@@ -146,7 +146,7 @@ body, html {
 
 
 
-.menu-side-bar button::after {
+.menu-sivu-bar button::after {
     content: "";
     position: absolute;
     top: 0;
@@ -158,7 +158,7 @@ body, html {
 }
 
 
-.menu-side-bar button:hover {
+.menu-sivu-bar button:hover {
     transform: scale(1.1) rotate(0deg) !important;
     background: #2ecc71;
     box-shadow: 12px 12px 0px black;
@@ -166,20 +166,20 @@ body, html {
 }
 
 
-.menu-side-bar button:active {
+.menu-sivu-bar button:active {
     transform: scale(1.05) rotate(-2deg) translate(4px, 4px) !important;
     box-shadow: 2px 2px 0px black;
 }
 
-.menu-side-bar button:nth-child(odd) { transform: rotate(-2deg); }
-.menu-side-bar button:nth-child(even) { transform: rotate(1deg); }
+.menu-sivu-bar button:nth-child(odd) { transform: rotate(-2deg); }
+.menu-sivu-bar button:nth-child(even) { transform: rotate(1deg); }
 
 
 
 
 
 
-@keyframes titleFloat {
+@keyframes title {
     0%, 100% { transform: translateY(0) rotate(-2deg); }
     50% { transform: translateY(-10px) rotate(2deg); }
 }
@@ -246,7 +246,7 @@ body, html {
 
 
 
-@keyframes rotateBurst {
+@keyframes rotate {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
@@ -264,12 +264,12 @@ body, html {
     opacity: 0.15;
 }
 
-@keyframes scrollDiag {
+@keyframes scroll {
     from { transform: translate(0, 0); }
     to { transform: translate(100px, -100px); }
 }
 
-.pattern {
+.patternni {
     width: 100%;
     height: 100%;
 
@@ -281,7 +281,7 @@ body, html {
 
 
 
-@keyframes tvFlicker {
+@keyframes tv {
     0% { opacity: 0.99; }
     50% { opacity: 1; }
     100% { opacity: 0.98; }
