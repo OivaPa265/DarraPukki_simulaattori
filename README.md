@@ -8,7 +8,7 @@ Currently implemented features present include
  * Multiple Minigames To test the player
  * Connecion from python using Flask/FlaskCors
 
-# Deployment
+
 
 
 # Authors
