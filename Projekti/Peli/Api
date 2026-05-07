@@ -44,6 +44,8 @@ def move(peli_id):
 
 
 # antaa minipelin voiton jälkeen merkin pelaajalle
+# Hitto eet oot paska koodaa
+# tiedän tiedän
 @app.route('/add_reward/<int:peli_id>', methods=['POST'])
 def add_reward(peli_id):
     cursor = Peli.Yhdiste.cursor()
@@ -54,7 +56,8 @@ def add_reward(peli_id):
     cursor.close()
     return jsonify({"status": "Reward added"})
 
-# aloitaa pelin 
+# aloitaa pelin  ja katsoo peljaana tavarat
+
 @app.route('/start_game', methods=['POST'])
 def start_game():
     json_data = request.json
@@ -81,6 +84,7 @@ def start_game():
 
 
 # hakee mahdolliset kentät
+# yea i could read that
 @app.route('/airports', methods=['GET'])
 def hae_kentat():
     data = Peli.lokaatiot()
