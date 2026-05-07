@@ -7,25 +7,27 @@
 </head>
 <body>
 
-<div id="bootti-screen">
-    <div class="bootti-content">
-        <h2 class="logo">DARRAWARE<br>MINIPELIT</h2>
-        <p class="loading">ALOITETAAN DARRAMOODI</p>
+<div id="boot-screen">
+    <div class="boot-content">
+        <h2 class="studio-logo">DARRAWARE<br>MINIPELIT</h2>
+        <p class="loading-text">ALOITETAAN DARRAMOODI</p>
         <div class="loading-bar"><div class="progress"></div></div>
     </div>
 </div>
 
    <div id="alku-valikko">
-      <div class="menu-sivu-bar">
+      <div class="menu-side-bar">
 <button class="menu-nappi" onclick="Random()">RANDOM</button>
-<button class="menu-nappi" onclick="">TEKSTII</button>
-<button class="menu-nappi" onclick="">TEKSTII</button>
+                    <button class="menu-nappi" onclick=window.location.href="Peli1.html"> Timing</button>
 
-            <button onclick=" location.href='http://localhost:63342/sgl/Projekti/Visuaali/Html_pelille.html?_ijt=hr7gdssua7q11sclonvv5o08ue&_ij_reload=RELOAD_ON_SAVE'"> Takasin</button>
+<button class="menu-nappi" onclick=window.location.href="Christopher.html"> Kaljajahti</button>
+          <button class="menu-nappi" onclick=window.location.href="Rehman.html"> ristinolla</button>
+                    <button class="menu-nappi" onclick=window.location.href="Rehman2.html"> Pyörä</button>
 
-        </div>
+          <button class="menu-nappi" onclick=window.location.href="Jing.html"> Sudoku</button>
+<button class="menu-nappi" onclick="goBackToGame()">Takaisin</button>        </div>
 
-    <div class="KeskiOsio">
+    <div class="center-content">
         <h1 class="Title">DARRAWARE</h1>
         <div class="DarraPukkiRuutu">
             <img src="Kuvat/DARRAWARE1.gif" class="tv-gif">
@@ -49,17 +51,18 @@
     </div>
 
 <script>
+    //laitaa pelit listaan jotta voidaan randomisoida
     function Random(){
         const pelit = [
             'Peli1.html',
-            'Peli3.html',
             'Christopher.html',
             'Rehman.html',
             'Rehman2.html',
             'Jing.html',
 
         ];
-
+        
+        //randomisoi
         const arpa = Math.floor(Math.random() * pelit.length);
         const valittuPeli = pelit[arpa];
 
@@ -70,6 +73,15 @@
     const urlParams = new URLSearchParams(window.location.search);
     const currentIcao = urlParams.get('icao');
     console.log(`Pelaaja on kentällä: ${currentIcao}`);
+
+// taikisin peliin
+function Takaisinpeliin() {
+
+    window.location.href = "../Html_pelille.html?showGame=true";
+}
+
+const peliId = urlParams.get('peli_id');
+console.log(`Peli ID: ${peliId} | Sijainti: ${currentIcao}`);
 </script>
 
 </body>
