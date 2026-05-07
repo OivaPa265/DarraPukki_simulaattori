@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Darrapukki Game</title>
     <link href="https://fonts.cdnfonts.com/css/cartoon-free" rel="stylesheet">
-      <link rel="stylesheet" href="PeliTyyli.css">
     <style>
-        /* Menu screeni tyylit*/
+        /* Tästä alkaa sign in ruudun tyylitys*/
+
         body {
             margin: 0;
             height: 100vh;
@@ -101,21 +101,14 @@
                 <button class="btn-main" onclick="startGame()">Aloita peli</button>
             </div>
         </div>
-
-
     </div>
-
-
-
 
     <div id="game-interface">
-<div id="game-header">
-    <div style="color: #ff2a2a; font-family: 'CARTOON FREE'; font-size: 32px;">
-        DARRAPUKKI: <span id="display-nimi">---</span>
-    </div>
-    <div id="display-merkit" style="font-size: 22px;">ALKOHOLI: ---</div>
-</div>
-Merkit
+        <div id="game-header" style="background: #222; padding: 15px; border-bottom: 2px solid #f1c40f; display: flex; justify-content: space-between; font-family: sans-serif;">
+            <div style="color: #ff2a2a; font-weight: bold; font-family: 'CARTOON FREE'; font-size: 24px;">DARRAPUKKI</div>
+            <div id="display-merkit" style="font-weight: bold;">ALKOHOLI: ---</div>
+        </div>
+
         <div style="display: flex; gap: 20px; padding: 20px; align-items: flex-start;">
             <div style="flex: 1; border: 2px solid #444; background: #1a1a1a; min-height: 400px; font-family: sans-serif;">
                 <div id="status-text" style="padding: 20px;">
@@ -124,14 +117,9 @@ Merkit
                 </div>
                 <div id="confirm-area" style="display: none; padding: 20px; background: #222; border-top: 2px solid #f1c40f;">
                     <p style="font-weight: bold; color: #f1c40f;">Haaste odottaa!</p>
- <div style="display: flex; gap: 10px; margin-top: 15px;">
-    <button onclick= window.location.href="DarraWare.html" style="flex: 1; padding: 15px; background: #2ecc71; border: none; cursor: pointer; color: white; font-weight: bold;">
-        KYLLÄ
-    </button>
-    <button onclick="cancelMinigame()" style="flex: 1; padding: 15px; background: #e74c3c; border: none; cursor: pointer; color: white; font-weight: bold;">
-        EI
-    </button>
-</div>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button onclick="location.href='DarraWare.html'" style="flex: 1; padding: 15px; background: #2ecc71; border: none; cursor: pointer; color: white; font-weight: bold;">KYLLÄ</button>
+                        <button onclick="cancelMinigame()" style="flex: 1; padding: 15px; background: #e74c3c; border: none; cursor: pointer; color: white; font-weight: bold;">EI</button>
                     </div>
                 </div>
             </div>
@@ -144,152 +132,86 @@ Merkit
     </div>
 
     <script>
-let currentIcao = "";
-
-async function startGame() {
-    const name = document.getElementById('player-name').value;
-    if (!name) return alert("Syötä nimi!");
-
-    try {
-        const res = await fetch('http://127.0.0.1:5000/start_game', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ name: name })
-        });
-        const data = await res.json();
-
-        sessionStorage.setItem('currentGameId', data.peli_id);
-
-
-
-        window.location.href = "Tarina.html";
-    } catch (e) {
-        alert("Yhteysvirhe palvelimeen!");
-    }
-}
-
-window.onload = () => {
-    const id = sessionStorage.getItem('currentGameId');
-    const urlParams = new URLSearchParams(window.location.search);
-    if (id && urlParams.get('showGame') === 'true') {
-        document.getElementById('start-screen').style.display = 'none';
-        document.getElementById('game-interface').style.display = 'block';
-        loadGameData();
-    }
-};
-
-async function loadGameData() {
-    const id = sessionStorage.getItem('currentGameId');
-    const merkit = sessionStorage.getItem('merkit') || 0;
-
-    try {
-        const sRes = await fetch(`http://127.0.0.1:5000/status/${id}`);
-        const status = await sRes.json();
-        const aRes = await fetch('http://127.0.0.1:5000/airports');
-        const airports = await aRes.json();
-
-        if(document.getElementById('display-nimi')) {
-            document.getElementById('display-nimi').innerText = status.name ? status.name.toUpperCase() : "PELAAJA";
+        //KAtsoo nykyisen icaon aloituksessa efhk
+        let currentIcao = "";
+        // pyytää käyttäjältä nimen joka mutetaan pelaajan tunnukseskki tälle tallenukselle
+        async function startGame() {
+            const name = document.getElementById('player-name').value;
+            if (!name) return alert("Syötä nimi!");
+            const res = await fetch('http://127.0.0.1:5000/start_game', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ name: name })
+            });
+            const data = await res.json();
+            sessionStorage.setItem('currentGameId', data.peli_id);
+            window.location.href = "Tarina.html";
         }
 
-        document.getElementById('display-merkit').innerText = `ALKOHOLI: ${status.alcohol} | MERKIT: ${merkit}/3`;
+        window.onload = () => {
+            const id = sessionStorage.getItem('currentGameId');
+            const urlParams = new URLSearchParams(window.location.search);
+            if (id && urlParams.get('showGame') === 'true') {
+                document.getElementById('start-screen').style.display = 'none';
+                document.getElementById('game-interface').style.display = 'block';
+                loadGameData();
+            }
+        };
 
-        const list = document.getElementById('airport-list');
-        list.innerHTML = '';
+        async function loadGameData() {
+            const id = sessionStorage.getItem('currentGameId');
+            try {
+                const sRes = await fetch(`http://127.0.0.1:5000/status/${id}`);
+                const status = await sRes.json();
+                const aRes = await fetch('http://127.0.0.1:5000/airports');
+                const airports = await aRes.json();
 
-        airports.forEach(a => {
-            const isHere = a.ident === status.location;
-            const item = document.createElement('div');
-            item.className = "airport-item";
-            item.innerHTML = `
-                <div><strong>${a.name}</strong><br><small>${a.ident}</small></div>
-                ${isHere ? '<b style="color: #2ecc71;">TÄÄLLÄ</b>' :
-                `<button class="btn-fly" onclick="lenna('${a.ident}')">LENNÄ</button>`}
+                document.getElementById('display-merkit').innerText = `ALKOHOLI: ${status.alcohol}`;
+                const list = document.getElementById('airport-list');
+                list.innerHTML = '';
+
+                airports.forEach(a => {
+                    const isHere = a.ident === status.location;
+                    const item = document.createElement('div');
+                    item.className = "airport-item";
+                    item.innerHTML = `
+                        <div><strong>${a.name}</strong><br><small>${a.ident}</small></div>
+                        ${isHere ? '<b style="color: #2ecc71;">TÄÄLLÄ</b>' :
+                        `<button onclick="lenna('${a.ident}')" style="background:#f1c40f; border:none; padding:10px; cursor:pointer; font-weight:bold;">LENNÄ</button>`}
+                    `;
+                    list.appendChild(item);
+                });
+            } catch (e) { setTimeout(loadGameData, 1000); }
+        }
+
+        async function lenna(icao) {
+            currentIcao = icao;
+            const id = sessionStorage.getItem('currentGameId');
+            const res = await fetch(`http://127.0.0.1:5000/move_player/${id}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ new_icao: icao })
+            });
+            const data = await res.json();
+
+            document.getElementById('status-text').innerHTML = `
+                <h2 style="color: #2ecc71;">SAAVUIT: ${icao}</h2>
+                <p>Matka: ${data.Matka} km</p>
+                <p>Alkoholi jäljellä: ${data.AlkoholiaJäljellä}</p>
             `;
-            list.appendChild(item);
-        });
-
-        if(document.getElementById('status-text').innerHTML.includes('Odottelen')) {
-             document.getElementById('status-text').innerHTML = `<p style="color: #2ecc71;">Tervetuloa takaisin, ${status.name}!</p>`;
+            document.getElementById('confirm-area').style.display = 'block';
+            loadGameData();
         }
 
-    } catch (e) {
-        console.error("Data load failed", e);
-        setTimeout(loadGameData, 2000);
-    }
-}
-
-async function lenna(icao) {
-    currentIcao = icao;
-    const id = sessionStorage.getItem('currentGameId');
-    try {
-        const res = await fetch(`http://127.0.0.1:5000/move_player/${id}`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ new_icao: icao })
-        });
-        const data = await res.json();
-
-        let merkit = parseInt(sessionStorage.getItem('merkit')) || 0;
-        merkit++;
-        sessionStorage.setItem('merkit', merkit.toString());
-
-        if (merkit >= 3) {
-            finishGame();
-            return;
-        }
-
-        document.getElementById('status-text').innerHTML = `
-            <h2 style="color: #2ecc71;">SAAVUIT: ${icao}</h2>
-            <p>Matka: ${data.Matka} km</p>
-            <p>Alkoholi jäljellä: ${data.AlkoholiaJäljellä}</p>
-        `;
-        document.getElementById('confirm-area').style.display = 'block';
-        loadGameData();
-    } catch (e) { alert("Lentäminen epäonnistui!"); }
-}
-
-async function goToDarraWare() {
-    const id = sessionStorage.getItem('currentGameId');
-
-    let merkit = parseInt(sessionStorage.getItem('merkit')) || 0;
-
-    try {
-        await fetch(`http://127.0.0.1:5000/add_reward/${id}`, { method: 'POST' });
-
-        merkit++;
-        sessionStorage.setItem('merkit', merkit.toString());
-
-        alert(`Sait merkin! Sinulla on nyt ${merkit}/3 merkkiä.`);
-
-        if (merkit >= 3) {
-            finishGame();
-        } else {
+        function goToDarraWare() {
+            const id = sessionStorage.getItem('currentGameId');
             window.location.href = `DarraWare/DarraWare.html?peli_id=${id}&icao=${currentIcao}`;
         }
-    } catch (e) {
-        window.location.href = `DarraWare/DarraWare.html?peli_id=${id}&icao=${currentIcao}`;
-    }
-}
 
-function cancelMinigame() {
-    document.getElementById('confirm-area').style.display = 'none';
-    document.getElementById('status-text').innerHTML = `<h3>MATKA JATKUU</h3><p>Valitse uusi kohde.</p>`;
-}
-
-function finishGame() {
-    sessionStorage.removeItem('merkit');
-
-    document.getElementById('game-interface').innerHTML = `
-        <div class="overlay">
-            <div id="start-ruutu">
-                <h1 style="color: #2ecc71;">VOITTO!</h1>
-                <p id="ohje">Keräsit 3 merkkiä ja selvisit darrasta!</p>
-                <button class="btn-main" onclick="location.href='index.html'">Pelaa uudelleen</button>
-            </div>
-        </div>
-    `;
-}
+        function cancelMinigame() {
+            document.getElementById('confirm-area').style.display = 'none';
+            document.getElementById('status-text').innerHTML = `<h3>MATKA JATKUU</h3><p>Valitse uusi kohde.</p>`;
+        }
     </script>
 </body>
 </html>
