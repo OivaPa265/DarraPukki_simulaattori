@@ -5,6 +5,8 @@ import Peli
 app = Flask(__name__)
 CORS(app)
 
+
+# aloitaa pelin
 @app.route('/start_game', methods=['POST'])
 def Pelin_aloitus():
     data = request.json
@@ -13,10 +15,11 @@ def Pelin_aloitus():
     return jsonify({'peli_id': peli_id})
 
 
+# hakee pelaajan stauksen eli tämän tavarat lokaatioin ja liikumis matkan jne
 @app.route('/status/<int:peli_id>', methods=['GET'])
-def get_status(peli_id):
+def hae_status(peli_id):
     cursor = Peli.Yhdiste.cursor(dictionary=True)
-    # Haetaan nyt myös nimi
+    # Hakee viimeiset tavarat ja kentän
     sql = "SELECT screen_name, location, alcohol FROM game WHERE id = %s"
     cursor.execute(sql, (peli_id,))
     result = cursor.fetchone()
@@ -31,6 +34,7 @@ def get_status(peli_id):
         })
     return jsonify({"status": "error", "message": "Peliä ei löytynyt"}), 404
 
+# mahdolistaa liikumisen
 @app.route('/move_player/<int:peli_id>', methods=['POST'])
 def move(peli_id):
     data = request.json
@@ -38,6 +42,8 @@ def move(peli_id):
     result = Peli.liikuminen(peli_id, target_icao)
     return jsonify(result)
 
+
+# antaa minipelin voiton jälkeen merkin pelaajalle
 @app.route('/add_reward/<int:peli_id>', methods=['POST'])
 def add_reward(peli_id):
     cursor = Peli.Yhdiste.cursor()
@@ -48,7 +54,7 @@ def add_reward(peli_id):
     cursor.close()
     return jsonify({"status": "Reward added"})
 
-
+# aloitaa pelin 
 @app.route('/start_game', methods=['POST'])
 def start_game():
     json_data = request.json
@@ -73,6 +79,8 @@ def start_game():
     cursor.close()
     return jsonify({"peli_id": peli_id, "name": pelaaja_nimi})
 
+
+# hakee mahdolliset kentät
 @app.route('/airports', methods=['GET'])
 def hae_kentat():
     data = Peli.lokaatiot()
