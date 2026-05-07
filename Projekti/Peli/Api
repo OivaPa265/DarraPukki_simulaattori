@@ -12,10 +12,24 @@ def Pelin_aloitus():
     peli_id = Peli.pelin_luonti(1000, 1000, 'EFHK', data.get('name', 'Pelaaja'), kentat)
     return jsonify({'peli_id': peli_id})
 
+
 @app.route('/status/<int:peli_id>', methods=['GET'])
-def status(peli_id):
-    res = Peli.pelaajan_tavarat(peli_id)
-    return jsonify(res)
+def get_status(peli_id):
+    cursor = Peli.Yhdiste.cursor(dictionary=True)
+    # Haetaan nyt myös nimi
+    sql = "SELECT screen_name, location, alcohol FROM game WHERE id = %s"
+    cursor.execute(sql, (peli_id,))
+    result = cursor.fetchone()
+    cursor.close()
+
+    if result:
+        return jsonify({
+            "status": "success",
+            "name": result['screen_name'],
+            "location": result['location'],
+            "alcohol": result['alcohol']
+        })
+    return jsonify({"status": "error", "message": "Peliä ei löytynyt"}), 404
 
 @app.route('/move_player/<int:peli_id>', methods=['POST'])
 def move(peli_id):
@@ -23,6 +37,41 @@ def move(peli_id):
     target_icao = data.get("new_icao")
     result = Peli.liikuminen(peli_id, target_icao)
     return jsonify(result)
+
+@app.route('/add_reward/<int:peli_id>', methods=['POST'])
+def add_reward(peli_id):
+    cursor = Peli.Yhdiste.cursor()
+    # Adds 500 to the current alcohol level
+    sql = "UPDATE game SET alcohol = alcohol + 500 WHERE id = %s"
+    cursor.execute(sql, (peli_id,))
+    Peli.Yhdiste.commit()
+    cursor.close()
+    return jsonify({"status": "Reward added"})
+
+
+@app.route('/start_game', methods=['POST'])
+def start_game():
+    json_data = request.json
+    pelaaja_nimi = json_data.get('name')
+
+    cursor = Peli.Yhdiste.cursor(dictionary=True)
+
+    check_sql = "SELECT id FROM game WHERE screen_name = %s ORDER BY id DESC LIMIT 1"
+    cursor.execute(check_sql, (pelaaja_nimi,))
+    existing_player = cursor.fetchone()
+
+    if existing_player:
+        peli_id = existing_player['id']
+        print(f"Ladataan vanha peli: {pelaaja_nimi} (ID: {peli_id})")
+    else:
+        insert_sql = "INSERT INTO game (screen_name, location, alcohol) VALUES (%s, 'EFHK', 1000)"
+        cursor.execute(insert_sql, (pelaaja_nimi,))
+        Peli.Yhdiste.commit()
+        peli_id = cursor.lastrowid
+        print(f"Luotiin uusi peli: {pelaaja_nimi} (ID: {peli_id})")
+
+    cursor.close()
+    return jsonify({"peli_id": peli_id, "name": pelaaja_nimi})
 
 @app.route('/airports', methods=['GET'])
 def hae_kentat():
