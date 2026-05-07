@@ -13,14 +13,14 @@
     text-align: justify;
     overflow: hidden;
 }
-
+/*Tarinan tekston tyylit*/
 .Contentti {
     position: relative;
     top: 9999px;
     transform-origin: 50% 100%;
     animation: Starwarsliikuminen 40s linear forwards;
 }
-
+/*Liikutaa tekstia*/
 @keyframes Starwarsliikuminen {
     0% {
         top: 400px;
@@ -37,6 +37,7 @@ body {
     margin: 0;
     overflow: hidden;
 }
+/*Tähdet*/
 .Tahdet {
     position: fixed;
     top: 0;
