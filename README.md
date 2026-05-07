@@ -7,7 +7,7 @@ Currently implemented features present include
  * FrontEnd Written in javascript
  * Multiple Minigames To test the player
  * Connecion from python using Flask/FlaskCors
- * interactive map made using leaflet
+
 # Deployment
 
 
