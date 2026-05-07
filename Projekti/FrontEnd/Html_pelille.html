@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Darrapukki Game</title>
+    <link href="https://fonts.cdnfonts.com/css/cartoon-free" rel="stylesheet">
+      <link rel="stylesheet" href="PeliTyyli.css">
+    <style>
+        /* Menu screeni tyylityy*/
+        body {
+            margin: 0;
+            height: 100vh;
+            background: url("Kuvat/img_1.png") no-repeat center center/cover;
+            font-family: 'CARTOON FREE', sans-serif;
+            background-color: #0d1117;
+        }
+        .overlay {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #start-ruutu {
+            text-align: center;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0,0,0,0.6);
+        }
+        h1 {
+            font-size: 80px;
+            color: #ff2a2a;
+            -webkit-text-stroke: 3px black;
+            margin-bottom: 10px;
+        }
+        #ohje {
+            font-size: 28px;
+            color: white;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 12px;
+            width: 250px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            text-align: center;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .btn-main {
+            padding: 12px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #ff2a2a, #ff6b6b);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'CARTOON FREE', sans-serif;
+        }
+        .btn-main:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px red;
+        }
+
+        #game-interface {
+            background: rgba(13, 17, 23, 0.9);
+            min-height: 100vh;
+            display: none;
+            color: white;
+        }
+        .airport-item {
+            padding: 15px;
+            background: #333;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="start-screen" class="overlay">
+        <div id="start-ruutu">
+            <h1>DARRAPUKKI</h1>
+            <p id="ohje">Syötä nimesi aloittaaksesi seikkailu</p>
+
+            <input type="text" id="player-name" placeholder="Pelaajan nimi...">
+
+            <div class="buttons">
+                <button class="btn-main" onclick="alert('Lennä ympäri Suomea ja selviä darrasta!')">Tutoriaali</button>
+                <button class="btn-main" onclick="startGame()">Aloita peli</button>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+    <div id="game-interface">
+<div id="game-header">
+    <div style="color: #ff2a2a; font-family: 'CARTOON FREE'; font-size: 32px;">
+        DARRAPUKKI: <span id="display-nimi">---</span>
+    </div>
+    <div id="display-merkit" style="font-size: 22px;">ALKOHOLI: ---</div>
+</div>
+Merkit
+        <div style="display: flex; gap: 20px; padding: 20px; align-items: flex-start;">
+            <div style="flex: 1; border: 2px solid #444; background: #1a1a1a; min-height: 400px; font-family: sans-serif;">
+                <div id="status-text" style="padding: 20px;">
+                    <h3 style="color: #f1c40f;">TILANNE</h3>
+                    <p>Valitse oikealta kohde lentääksesi.</p>
+                </div>
+                <div id="confirm-area" style="display: none; padding: 20px; background: #222; border-top: 2px solid #f1c40f;">
+                    <p style="font-weight: bold; color: #f1c40f;">Haaste odottaa!</p>
+ <div style="display: flex; gap: 10px; margin-top: 15px;">
+    <button onclick= window.location.href="DarraWare.html" style="flex: 1; padding: 15px; background: #2ecc71; border: none; cursor: pointer; color: white; font-weight: bold;">
+        KYLLÄ
+    </button>
+    <button onclick="cancelMinigame()" style="flex: 1; padding: 15px; background: #e74c3c; border: none; cursor: pointer; color: white; font-weight: bold;">
+        EI
+    </button>
+</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="flex: 1; background: #1a1a1a; padding: 20px; border: 1px solid #f1c40f; max-height: 80vh; overflow-y: auto; font-family: sans-serif;">
+                <h2 style="color: #f1c40f; margin: 0 0 15px 0;">VALITSE KOHDE</h2>
+                <div id="airport-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+let currentIcao = "";
+
+async function startGame() {
+    const name = document.getElementById('player-name').value;
+    if (!name) return alert("Syötä nimi!");
+
+    try {
+        const res = await fetch('http://127.0.0.1:5000/start_game', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ name: name })
+        });
+        const data = await res.json();
+
+        sessionStorage.setItem('currentGameId', data.peli_id);
+
+
+
+        window.location.href = "Tarina.html";
+    } catch (e) {
+        alert("Yhteysvirhe palvelimeen!");
+    }
+}
+
+window.onload = () => {
+    const id = sessionStorage.getItem('currentGameId');
+    const urlParams = new URLSearchParams(window.location.search);
+    if (id && urlParams.get('showGame') === 'true') {
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('game-interface').style.display = 'block';
+        loadGameData();
+    }
+};
+
+async function loadGameData() {
+    const id = sessionStorage.getItem('currentGameId');
+    const merkit = sessionStorage.getItem('merkit') || 0;
+
+    try {
+        const sRes = await fetch(`http://127.0.0.1:5000/status/${id}`);
+        const status = await sRes.json();
+        const aRes = await fetch('http://127.0.0.1:5000/airports');
+        const airports = await aRes.json();
+
+        if(document.getElementById('display-nimi')) {
+            document.getElementById('display-nimi').innerText = status.name ? status.name.toUpperCase() : "PELAAJA";
+        }
+
+        document.getElementById('display-merkit').innerText = `ALKOHOLI: ${status.alcohol} | MERKIT: ${merkit}/3`;
+
+        const list = document.getElementById('airport-list');
+        list.innerHTML = '';
+
+        airports.forEach(a => {
+            const isHere = a.ident === status.location;
+            const item = document.createElement('div');
+            item.className = "airport-item";
+            item.innerHTML = `
+                <div><strong>${a.name}</strong><br><small>${a.ident}</small></div>
+                ${isHere ? '<b style="color: #2ecc71;">TÄÄLLÄ</b>' :
+                `<button class="btn-fly" onclick="lenna('${a.ident}')">LENNÄ</button>`}
+            `;
+            list.appendChild(item);
+        });
+
+        if(document.getElementById('status-text').innerHTML.includes('Odottelen')) {
+             document.getElementById('status-text').innerHTML = `<p style="color: #2ecc71;">Tervetuloa takaisin, ${status.name}!</p>`;
+        }
+
+    } catch (e) {
+        console.error("Data load failed", e);
+        setTimeout(loadGameData, 2000);
+    }
+}
+
+async function lenna(icao) {
+    currentIcao = icao;
+    const id = sessionStorage.getItem('currentGameId');
+    try {
+        const res = await fetch(`http://127.0.0.1:5000/move_player/${id}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ new_icao: icao })
+        });
+        const data = await res.json();
+
+        let merkit = parseInt(sessionStorage.getItem('merkit')) || 0;
+        merkit++;
+        sessionStorage.setItem('merkit', merkit.toString());
+
+        if (merkit >= 3) {
+            finishGame();
+            return;
+        }
+
+        document.getElementById('status-text').innerHTML = `
+            <h2 style="color: #2ecc71;">SAAVUIT: ${icao}</h2>
+            <p>Matka: ${data.Matka} km</p>
+            <p>Alkoholi jäljellä: ${data.AlkoholiaJäljellä}</p>
+        `;
+        document.getElementById('confirm-area').style.display = 'block';
+        loadGameData();
+    } catch (e) { alert("Lentäminen epäonnistui!"); }
+}
+
+async function goToDarraWare() {
+    const id = sessionStorage.getItem('currentGameId');
+
+    let merkit = parseInt(sessionStorage.getItem('merkit')) || 0;
+
+    try {
+        await fetch(`http://127.0.0.1:5000/add_reward/${id}`, { method: 'POST' });
+
+        merkit++;
+        sessionStorage.setItem('merkit', merkit.toString());
+
+        alert(`Sait merkin! Sinulla on nyt ${merkit}/3 merkkiä.`);
+
+        if (merkit >= 3) {
+            finishGame();
+        } else {
+            window.location.href = `DarraWare/DarraWare.html?peli_id=${id}&icao=${currentIcao}`;
+        }
+    } catch (e) {
+        window.location.href = `DarraWare/DarraWare.html?peli_id=${id}&icao=${currentIcao}`;
+    }
+}
+
+function cancelMinigame() {
+    document.getElementById('confirm-area').style.display = 'none';
+    document.getElementById('status-text').innerHTML = `<h3>MATKA JATKUU</h3><p>Valitse uusi kohde.</p>`;
+}
+
+function finishGame() {
+    sessionStorage.removeItem('merkit');
+
+    document.getElementById('game-interface').innerHTML = `
+        <div class="overlay">
+            <div id="start-ruutu">
+                <h1 style="color: #2ecc71;">VOITTO!</h1>
+                <p id="ohje">Keräsit 3 merkkiä ja selvisit darrasta!</p>
+                <button class="btn-main" onclick="location.href='index.html'">Pelaa uudelleen</button>
+            </div>
+        </div>
+    `;
+}
+    </script>
+</body>
+</html>
