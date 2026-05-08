@@ -54,7 +54,7 @@ def add_reward(peli_id):
     cursor.execute(sql, (peli_id,))
     Peli.Yhdiste.commit()
     cursor.close()
-    return jsonify({"status": "Reward added"})
+    return jsonify({"status": "Lisä merkki"})
 
 # aloitaa pelin  ja katsoo peljaana tavarat
 
