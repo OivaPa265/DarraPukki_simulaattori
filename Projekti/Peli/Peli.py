@@ -3,6 +3,7 @@ import mysql.connector
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
+# flask yhdiste
 app = Flask(__name__)
 
 
@@ -23,7 +24,6 @@ Yhdiste = mysql.connector.connect(
 
 # Valitsee 15 satunaista lentokentää suomesta ja lajitelee ne aakkos-järjestyksessä
 def lokaatiot():
-    # We select coordinates here so they are available for distance math later
     sql = """
     SELECT ident, name, latitude_deg, longitude_deg 
     FROM airport 
