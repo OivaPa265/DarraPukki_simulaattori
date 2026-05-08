@@ -3,6 +3,7 @@ import mysql.connector
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
+# flask yhdiste
 app = Flask(__name__)
 
 
@@ -23,7 +24,6 @@ Yhdiste = mysql.connector.connect(
 
 # Valitsee 15 satunaista lentokentää suomesta ja lajitelee ne aakkos-järjestyksessä
 def lokaatiot():
-    # We select coordinates here so they are available for distance math later
     sql = """
     SELECT ident, name, latitude_deg, longitude_deg 
     FROM airport 
@@ -94,7 +94,8 @@ def Kentan_tehtava(g_id, cur_airport):
         return False
     return result
 
-#Liikuminen
+#Laskee liikumisne ja matkan 
+#MITÄ TAAS!!!!
 
 def liikuminen(peli_id, target_icao):
     state = pelaajan_tavarat(peli_id)
@@ -111,10 +112,8 @@ def liikuminen(peli_id, target_icao):
     lat1, lon1 = v_info[0]['latitude_deg'], v_info[0]['longitude_deg']
     lat2, lon2 = t_info[0]['latitude_deg'], t_info[0]['longitude_deg']
 
-    # Pythagorean distance (simple approximation)
     distance = int(((lat2 - lat1) ** 2 + (lon2 - lon1) ** 2) ** 0.5 * 300)
 
-    # Manual fuel cost: distance / 10, minimum 200
     alcohol_used = max(200, int(distance / 10))
 
     if current_alcohol < alcohol_used:
@@ -140,7 +139,7 @@ def pelaajan_tavarat(peli_id):
     sql = "SELECT alcohol, player_range, location FROM game WHERE id = %s"
     cursor.execute(sql, (peli_id,))
     result = cursor.fetchone()
-    cursor.close() # <--- MUST HAVE THIS
+    cursor.close()
     return result
 
 
