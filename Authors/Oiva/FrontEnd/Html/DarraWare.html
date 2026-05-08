@@ -7,25 +7,28 @@
 </head>
 <body>
 
-<div id="boot-screen">
+/* alku ruudun classit*/
+<div id="bootit-screen">
     <div class="boot-content">
-        <h2 class="studio-logo">DARRAWARE<br>AUTHOR 🍌</h2>
+        <h2 class="studio-logo">DARRAWARE<br>MINIPELIT</h2>
         <p class="loading-text">ALOITETAAN DARRAMOODI</p>
         <div class="loading-bar"><div class="progress"></div></div>
     </div>
 </div>
-
+/* Peli napit sekä randomisoiminen*/
    <div id="alku-valikko">
       <div class="menu-side-bar">
-<button class="menu-nappi" onclick="pelaaSatunaisesti()">RANDOM</button>
-          <button onclick="location.href='http://localhost:63342/sgl/DarraWare/Peli1.html?_ijt=ef6is1fet45q6b5se8726635l5&_ij_reload=RELOAD_ON_SAVE'">Peli1</button>
-            <button onclick="location.href='http://localhost:63342/sgl/DarraWare/Peli2.html?_ijt=h76in61ng2u7opt41btk7ob7rb&_ij_reload=RELOAD_ON_SAVE'">Peli2</button>
-            <button onclick="location.href='http://localhost:63342/sgl/DarraWare/Peli3.html?_ijt=q8vtt82bc661j164c7ku5e3hsr&_ij_reload=RELOAD_ON_SAVE'">Peli3</button>
-            <button onclick="location.href='http://localhost:63342/sgl/DarraWare/Peli4.html?_ijt=kpk8tvn6pg2ca7dstoasrbv1qu&_ij_reload=RELOAD_ON_SAVE'">Peli4</button>
-            <button onclick=" location.href='http://localhost:63342/sgl/Projekti/Visuaali/Html_pelille.html?_ijt=hr7gdssua7q11sclonvv5o08ue&_ij_reload=RELOAD_ON_SAVE'"> Takasin</button>
+<button class="menu-nappi" onclick="Random()">RANDOM</button>
+                    <button class="menu-nappi" onclick=window.location.href="Peli1.html"> Timing</button>
 
-        </div>
+<button class="menu-nappi" onclick=window.location.href="Christopher.html"> Kaljajahti</button>
+          <button class="menu-nappi" onclick=window.location.href="Rehman.html"> ristinolla</button>
+                    <button class="menu-nappi" onclick=window.location.href="Rehman2.html"> Pyörä</button>
 
+          <button class="menu-nappi" onclick=window.location.href="Jing.html"> Sudoku</button>
+<button class="menu-nappi" onclick="goBackToGame()">Takaisin</button>        </div>
+
+       /*Gif luokat*/
     <div class="center-content">
         <h1 class="Title">DARRAWARE</h1>
         <div class="DarraPukkiRuutu">
@@ -50,17 +53,18 @@
     </div>
 
 <script>
-    function pelaaSatunaisesti(){
+    //laitaa pelit listaan jotta voidaan randomisoida
+    function Random(){
         const pelit = [
             'Peli1.html',
-            'Peli2.html',
-            'Peli3.html',
-            'Peli4.html',
             'Christopher.html',
             'Rehman.html',
-            'Jing.html'
-        ];
+            'Rehman2.html',
+            'Jing.html',
 
+        ];
+        
+        //randomisoi
         const arpa = Math.floor(Math.random() * pelit.length);
         const valittuPeli = pelit[arpa];
 
@@ -71,6 +75,15 @@
     const urlParams = new URLSearchParams(window.location.search);
     const currentIcao = urlParams.get('icao');
     console.log(`Pelaaja on kentällä: ${currentIcao}`);
+
+// taikisin peliin
+function Takaisinpeliin() {
+
+    window.location.href = "../Html_pelille.html?showGame=true";
+}
+
+const peliId = urlParams.get('peli_id');
+console.log(`Peli ID: ${peliId} | Sijainti: ${currentIcao}`);
 </script>
 
 </body>
