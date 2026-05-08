@@ -108,6 +108,8 @@
 
 
 
+
+    
     <div id="game-interface">
 <div id="game-header">
     <div style="color: #ff2a2a; font-family: 'CARTOON FREE'; font-size: 32px;">
@@ -128,7 +130,7 @@ Merkit
     <button onclick= window.location.href="DarraWare.html" style="flex: 1; padding: 15px; background: #2ecc71; border: none; cursor: pointer; color: white; font-weight: bold;">
         KYLLÄ
     </button>
-    <button onclick="cancelMinigame()" style="flex: 1; padding: 15px; background: #e74c3c; border: none; cursor: pointer; color: white; font-weight: bold;">
+    <button onclick="PeruMinigame()" style="flex: 1; padding: 15px; background: #e74c3c; border: none; cursor: pointer; color: white; font-weight: bold;">
         EI
     </button>
 </div>
@@ -168,6 +170,8 @@ async function startGame() {
     }
 }
 
+
+        // katsoo nykyisen peli id tavarat
 window.onload = () => {
     const id = sessionStorage.getItem('currentGameId');
     const urlParams = new URLSearchParams(window.location.search);
@@ -248,8 +252,8 @@ async function lenna(icao) {
         loadGameData();
     } catch (e) { alert("Lentäminen epäonnistui!"); }
 }
-
-async function goToDarraWare() {
+// Antaa meerkin kun pelaja suoritaa pelin darrawaressa
+async function ToDarraWare() {
     const id = sessionStorage.getItem('currentGameId');
 
     let merkit = parseInt(sessionStorage.getItem('merkit')) || 0;
@@ -272,11 +276,13 @@ async function goToDarraWare() {
     }
 }
 
-function cancelMinigame() {
+        // jos pelaaja päättää olla pelaamatta minipeliä
+function PeruMinigame() {
     document.getElementById('confirm-area').style.display = 'none';
     document.getElementById('status-text').innerHTML = `<h3>MATKA JATKUU</h3><p>Valitse uusi kohde.</p>`;
 }
 
+        // Jos voitaa pelin
 function finishGame() {
     sessionStorage.removeItem('merkit');
 
